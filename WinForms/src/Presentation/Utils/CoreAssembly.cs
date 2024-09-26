@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace GameLauncher.ClientApps.Winforms.Presentation.Services;
+namespace GameLauncher.ClientApps.Winforms.Presentation.Utils;
 
 public static class CoreAssembly
 {

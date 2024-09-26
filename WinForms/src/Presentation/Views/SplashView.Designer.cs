@@ -1,6 +1,6 @@
 ﻿namespace GameLauncher.ClientApps.Winforms.Presentation.Forms;
 
-partial class SplashForm
+partial class SplashView
 {
     /// <summary>
     /// Required designer variable.

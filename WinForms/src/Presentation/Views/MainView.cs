@@ -1,15 +1,22 @@
 ﻿namespace GameLauncher.ClientApps.Winforms.Presentation.Forms;
 
-public partial class MainForm : Form, IMainView
+public partial class MainView : Form, IMainView
 {
-    private int childFormNumber = 0;
-
-    public MainForm()
+    public MainView()
     {
         InitializeComponent();
     }
 
+    private int _childFormNumber = 0;
+
+    public event EventHandler? OnViewLoaded;
+
     public void InitializeView() { }
+
+    private void MainView_Load(object sender, EventArgs e)
+    {
+        OnViewLoaded?.Invoke(this, e);
+    }
 
     private void ShowNewForm(object sender, EventArgs e)
     {
@@ -18,7 +25,7 @@ public partial class MainForm : Form, IMainView
             {
                 MdiParent = this,
 
-                Text = "Window " + childFormNumber++,
+                Text = "Window " + _childFormNumber++,
             };
 
         childForm.Show();
@@ -97,6 +104,19 @@ public partial class MainForm : Form, IMainView
     }
 
     private void CloseAllToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        foreach (Form childForm in MdiChildren)
+        {
+            childForm.Close();
+        }
+    }
+
+    public void CloseView()
+    {
+        Close();
+    }
+
+    public void CloseAll()
     {
         foreach (Form childForm in MdiChildren)
         {

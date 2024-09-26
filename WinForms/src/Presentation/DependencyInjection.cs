@@ -17,11 +17,12 @@ public static class DependencyInjection
         );
 
         //Views
-        services.AddTransient<ISplashView, SplashForm>();
-        services.AddTransient<IMainView, MainForm>();
+        services.AddTransient<ISplashView, SplashView>();
+        services.AddTransient<IMainView, MainView>();
 
         //Presenters
-        services.AddTransient<SplashPresenter>();
+        services.AddTransient<ISplashPresenter, SplashPresenter>();
+        services.AddTransient<IMainPresenter, MainPresenter>();
 
         return services;
     }

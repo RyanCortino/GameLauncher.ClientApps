@@ -1,6 +1,6 @@
 ﻿namespace GameLauncher.ClientApps.Winforms.Presentation.Forms;
 
-partial class MainForm
+partial class MainView
 {
     /// <summary>
     /// Required designer variable.
@@ -29,7 +29,7 @@ partial class MainForm
     private void InitializeComponent()
     {
         this.components = new System.ComponentModel.Container();
-        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainView));
         this.menuStrip = new System.Windows.Forms.MenuStrip();
         this.fileMenu = new System.Windows.Forms.ToolStripMenuItem();
         this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();

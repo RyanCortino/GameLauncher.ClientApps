@@ -1,16 +1,14 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace GameLauncher.ClientApps.Winforms.Presentation.Services;
+﻿namespace GameLauncher.ClientApps.Winforms.Presentation.Services;
 
 internal class AppContextWithSplashScreen(
-    ILogger<AppContextWithSplashScreen> logger,
-    ISplashView splashView,
-    IMainView mainView
-) : ApplicationContext(splashView as Form)
+    IMainPresenter mainPresenter,
+    ISplashPresenter splashPresenter,
+    ILogger<AppContextWithSplashScreen> logger
+) : ApplicationContext(splashPresenter.GetView as Form)
 {
     private readonly ILogger _logger = logger;
 
-    private readonly IMainView _mainView = mainView;
+    private readonly IMainPresenter _mainPresenter = mainPresenter;
 
     protected override void OnMainFormClosed(object? sender, EventArgs e)
     {
@@ -21,6 +19,11 @@ internal class AppContextWithSplashScreen(
             return;
         }
 
+        //var response = MessageBox.Show("Are you sure you want to quit?");
+
+        //if (response != DialogResult.Yes)
+        //    return;
+
         _logger.LogInformation("Exiting Application.");
 
         base.OnMainFormClosed(sender, e);
@@ -28,7 +31,7 @@ internal class AppContextWithSplashScreen(
 
     private void LaunchMainForm()
     {
-        MainForm = _mainView as Form;
+        MainForm = _mainPresenter.GetView as Form;
 
         MainForm?.Show();
     }

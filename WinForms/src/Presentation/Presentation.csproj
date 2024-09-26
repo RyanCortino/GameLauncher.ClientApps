@@ -42,11 +42,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Forms\MainForm.cs">
+    <Compile Update="Views\MainView.cs">
       <SubType>Form</SubType>
       <CustomToolNamespace></CustomToolNamespace>
     </Compile>
-    <Compile Update="Forms\SplashForm.cs">
+    <Compile Update="Views\SplashView.cs">
       <SubType>Form</SubType>
       <CustomToolNamespace></CustomToolNamespace>
     </Compile>
