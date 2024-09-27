@@ -10,7 +10,7 @@
 
 	<PropertyGroup>
 		<RootNamespace>GameLauncher.ClientApps.Winforms.Presentation</RootNamespace>
-		<AssemblyName>GameLauncher.ClientApps.Winforms.Presentatioon</AssemblyName>
+		<AssemblyName>GameLauncher.ClientApps.Winforms.Presentation</AssemblyName>
 	</PropertyGroup>
 
   <ItemGroup>

@@ -19,11 +19,6 @@ internal class AppContextWithSplashScreen(
             return;
         }
 
-        //var response = MessageBox.Show("Are you sure you want to quit?");
-
-        //if (response != DialogResult.Yes)
-        //    return;
-
         _logger.LogInformation("Exiting Application.");
 
         base.OnMainFormClosed(sender, e);
