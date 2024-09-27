@@ -14,6 +14,12 @@
 	</PropertyGroup>
 
   <ItemGroup>
+	  <None Remove="Resources\Fonts\Montagu_Slab\MontaguSlab.ttf" />
+	  <None Remove="Resources\Fonts\Montserrat\Montserrat-Italic.ttf" />
+	  <None Remove="Resources\Fonts\Montserrat\Montserrat.ttf" />
+	</ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
@@ -34,6 +40,19 @@
 
 	
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Fonts\Montagu_Slab\MontaguSlab.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Fonts\Montserrat\Montserrat-Italic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Fonts\Montserrat\Montserrat.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+	
+  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
     <PackageReference Include="Serilog.Extensions.Hosting" />
@@ -42,6 +61,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Update="Views\MainView.cs">
       <SubType>Form</SubType>
       <CustomToolNamespace></CustomToolNamespace>
@@ -50,6 +74,13 @@
       <SubType>Form</SubType>
       <CustomToolNamespace></CustomToolNamespace>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>
