@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using GameLauncher.ClientApps.Winforms.Infrastructure.Factories;
+using Microsoft.Extensions.Configuration;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -9,6 +10,9 @@ public static class DependencyInjection
         IConfiguration configuration
     )
     {
+        services.AddSingleton<IResourceFactory<Image>, ImageResourceFactory>();
+        services.AddSingleton<IFontFactory, FontFactory>();
+
         return services;
     }
 }

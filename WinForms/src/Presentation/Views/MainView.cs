@@ -1,22 +1,14 @@
 ﻿namespace GameLauncher.ClientApps.Winforms.Presentation.Forms;
 
-public partial class MainView : Form, IMainView
+public partial class MainView : BaseView, IMainView
 {
-    public MainView()
+    public MainView(ILogger<MainView> logger)
+        : base(logger)
     {
         InitializeComponent();
     }
 
     private int _childFormNumber = 0;
-
-    public event EventHandler? OnViewLoaded;
-
-    public void InitializeView() { }
-
-    private void MainView_Load(object sender, EventArgs e)
-    {
-        OnViewLoaded?.Invoke(this, e);
-    }
 
     private void ShowNewForm(object sender, EventArgs e)
     {
@@ -109,11 +101,6 @@ public partial class MainView : Form, IMainView
         {
             childForm.Close();
         }
-    }
-
-    public void CloseView()
-    {
-        Close();
     }
 
     public void CloseAll()

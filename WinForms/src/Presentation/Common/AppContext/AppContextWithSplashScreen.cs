@@ -1,10 +1,10 @@
-﻿namespace GameLauncher.ClientApps.Winforms.Presentation.Services;
+﻿namespace GameLauncher.ClientApps.Winforms.Presentation.Common.AppContext;
 
 internal class AppContextWithSplashScreen(
     IMainPresenter mainPresenter,
     ISplashPresenter splashPresenter,
     ILogger<AppContextWithSplashScreen> logger
-) : ApplicationContext(splashPresenter.GetView as Form)
+) : ApplicationContext(splashPresenter.View as Form)
 {
     private readonly ILogger _logger = logger;
 
@@ -26,7 +26,7 @@ internal class AppContextWithSplashScreen(
 
     private void LaunchMainForm()
     {
-        MainForm = _mainPresenter.GetView as Form;
+        MainForm = _mainPresenter.View as Form;
 
         MainForm?.Show();
     }

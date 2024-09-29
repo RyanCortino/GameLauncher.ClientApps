@@ -1,98 +1,56 @@
-﻿using System.Drawing.Text;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Factories;
+using GameLauncher.ClientApps.Winforms.Presentation.Common.Utils;
 
 namespace GameLauncher.ClientApps.Winforms.Presentation.Presenters;
 
-internal class SplashPresenter : BasePresenter, ISplashPresenter
+internal class SplashPresenter(
+    ISplashView splashView,
+    IOptions<ApplicationOptions> applicationOptions,
+    IResourceFactory<Image> imageFactory,
+    IFontFactory fontFactory,
+    ILogger<SplashPresenter> logger
+) : BasePresenter(splashView, logger), ISplashPresenter
 {
-    public SplashPresenter(
-        ISplashView splashView,
-        IOptions<ApplicationOptions> applicationOptions,
-        ILogger<SplashPresenter> logger
-    )
-    {
-        _splashView = splashView;
+    private readonly ApplicationOptions _applicationOptions = applicationOptions.Value;
 
-        _logger = logger;
+    private readonly IFontFactory _fontFactory = fontFactory;
 
-        _applicationOptions = applicationOptions.Value;
-
-        _fontCache = new PrivateFontCollection();
-
-        _imageCache = [];
-
-        Initialize();
-    }
-
-    ~SplashPresenter()
-    {
-        UnregisterEventHandlers();
-    }
-
-    private readonly ILogger _logger;
-
-    private readonly ISplashView _splashView;
-
-    private readonly ApplicationOptions _applicationOptions;
-
-    private PrivateFontCollection _fontCache;
-
-    private Dictionary<string, Image> _imageCache;
+    private readonly IResourceFactory<Image> _imageFactory = imageFactory;
 
     public event EventHandler? OnPreloadCompleted;
-    public override ISplashView GetView => _splashView;
+
+    public override ISplashView? View => _view as ISplashView;
+
+    protected override async void OnViewShownEventHandler(object? sender, EventArgs e) =>
+        await Task.Run(() => PreloadAsync(sender, e));
+
+    private async void OnPreloadCompletedEventHandler(object? sender, EventArgs e) =>
+        await Task.Run(() => PreloadCompletedAsync(sender, e));
 
     private static async Task Delay(int millisecondsDelay)
     {
         await Task.Delay(millisecondsDelay);
     }
 
-    private static Stream GetFontStream(string fontResourceName)
-    {
-        return CoreAssembly.Reference.GetManifestResourceStream(
-            $"{CoreAssembly.Reference.GetName().Name}.{fontResourceName.Replace("/", ".")}"
-        )!;
-    }
-
-    private static Image? GetImageFromResource(string imageResourceName)
-    {
-        try
-        {
-            // Use reflection to access the resource stream
-            var assembly = CoreAssembly.Reference;
-
-            using Stream stream = CoreAssembly.Reference.GetManifestResourceStream(
-                $"{CoreAssembly.Reference.GetName().Name}.{imageResourceName.Replace("/", ".")}"
-            )!;
-
-            if (stream != null)
-                return Image.FromStream(stream);
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(
-                $"Failed to load image: {imageResourceName}\n{ex.Message}",
-                "Error",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error
-            );
-        }
-
-        return null;
-    }
-
-    private async void OnViewLoadedEventHandler(object? sender, EventArgs e) =>
-        await Task.Run(() => PreloadAsync(sender, e));
-
-    private async void OnPreloadCompletedEventHandler(object? sender, EventArgs e) =>
-        await Task.Run(() => CloseSplashView());
-
-    private async Task CloseSplashView()
+    private async Task PreloadCompletedAsync(object? sender, EventArgs e)
     {
         UpdateProgress("Loading complete.");
 
+        _logger.LogInformation(
+            "{Images} loaded into {ImageFactory}.",
+            _imageFactory.Count,
+            _imageFactory
+        );
+
+        _logger.LogInformation(
+            "{Fonts} loaded into {FontFactory}.",
+            _fontFactory.Count,
+            _fontFactory
+        );
+
         await Delay(250);
 
-        _splashView.CloseView();
+        View?.CloseView();
     }
 
     private async Task PreloadAsync(object? sender, EventArgs e)
@@ -104,15 +62,15 @@ internal class SplashPresenter : BasePresenter, ISplashPresenter
             Task[] loadingTasks =
             [
                 // Start the default delay given the provided app setting
-                DelayTask((int)(_applicationOptions.DefaultSplashScreenDelay * 1000)),
+                DelayWithProgressUpdate((int)(_applicationOptions.DefaultSplashScreenDelay * 1000)),
                 // Load fonts from the embedded resources
                 LoadFonts(),
                 // Load images from the embedded resources
                 LoadImages(),
                 // DEMO ONLY.
-                DelayTask(800, "Example Resource 1 has finished loading."),
-                DelayTask(400, "Example Resource 2 has finished loading."),
-                DelayTask(1200, "Example Resource 3 has finished loading."),
+                DelayWithProgressUpdate(800, "Example Resource 1 has finished loading."),
+                DelayWithProgressUpdate(400, "Example Resource 2 has finished loading."),
+                DelayWithProgressUpdate(1200, "Example Resource 3 has finished loading."),
             ];
 
             Task.WaitAll(loadingTasks);
@@ -121,7 +79,7 @@ internal class SplashPresenter : BasePresenter, ISplashPresenter
         OnPreloadCompleted?.Invoke(this, e);
     }
 
-    private Task DelayTask(int delay, string? progressMessage = null)
+    private Task DelayWithProgressUpdate(int delay, string? progressMessage = null)
     {
         return Task.Run(async () =>
         {
@@ -132,9 +90,9 @@ internal class SplashPresenter : BasePresenter, ISplashPresenter
         });
     }
 
-    private Task LoadImages(string[]? imageFilenames = null)
+    private Task LoadImages(string[]? imageFileNames = null)
     {
-        imageFilenames ??=
+        imageFileNames ??=
         [
             "Home.png",
             "Library.png",
@@ -143,64 +101,42 @@ internal class SplashPresenter : BasePresenter, ISplashPresenter
             "Menu.png",
             "Settings.png",
             "ProgressActivity.png",
+            "AccountCircle.png",
         ];
 
         return Task.Run(() =>
         {
-            foreach (var imageFilename in imageFilenames)
+            foreach (var imageFileName in imageFileNames)
             {
-                var image = GetImageFromResource(imageFilename);
+                _imageFactory.LoadResource(
+                    CoreAssembly.Reference.GetManifestResourceStream(
+                        $"{CoreAssembly.Reference.GetName().Name}.{imageFileName.Replace("/", ".")}"
+                    )!,
+                    Path.GetFileNameWithoutExtension(imageFileName),
+                    imageFileName
+                );
 
-                if (image is not null)
-                {
-                    var imageName = Path.GetFileNameWithoutExtension(imageFilename);
-                    _imageCache[imageName] = image;
-
-                    UpdateProgress($"Loaded Image: {imageName}");
-                    continue;
-                }
-
-                UpdateProgress($"Image Resource not found for {imageFilename}");
+                UpdateProgress($"Loaded Image File: {imageFileName}");
             }
         });
     }
 
-    private Task LoadFonts(string[]? fontFilenames = null)
+    private Task LoadFonts(string[]? fontFileNames = null)
     {
-        fontFilenames ??= ["MontaguSlab.ttf", "Montserrat.ttf", "Montserrat-Italic.ttf"];
+        fontFileNames ??= ["MontaguSlab.ttf", "Montserrat.ttf", "Montserrat-Italic.ttf"];
 
         return Task.Run(() =>
         {
-            foreach (var fontFilenames in fontFilenames)
+            foreach (var fontFileName in fontFileNames)
             {
-                using Stream fontStream = GetFontStream(fontFilenames);
+                _fontFactory.LoadFont(
+                    fontFileName,
+                    CoreAssembly.Reference.GetManifestResourceStream(
+                        $"{CoreAssembly.Reference.GetName().Name}.{fontFileName.Replace("/", ".")}"
+                    )!
+                );
 
-                if (fontStream is not null)
-                {
-                    // Create an array to hold the font data
-                    byte[] fontData = new byte[fontStream.Length];
-
-                    fontStream.Read(fontData, 0, (int)fontStream.Length);
-
-                    // Use unsafe context to add the font to the collection
-                    IntPtr fontPtr = System.Runtime.InteropServices.Marshal.AllocCoTaskMem(
-                        (int)fontStream.Length
-                    );
-
-                    System.Runtime.InteropServices.Marshal.Copy(
-                        fontData,
-                        0,
-                        fontPtr,
-                        (int)fontStream.Length
-                    );
-
-                    _fontCache.AddMemoryFont(fontPtr, (int)fontStream.Length);
-
-                    // Free the unmanaged memory
-                    System.Runtime.InteropServices.Marshal.FreeCoTaskMem(fontPtr);
-                }
-
-                UpdateProgress($"Loaded Font File: {fontFilenames}");
+                UpdateProgress($"Loaded Font File: {fontFileName}");
             }
         });
     }
@@ -210,32 +146,31 @@ internal class SplashPresenter : BasePresenter, ISplashPresenter
         return Task.Run(() => { });
     }
 
-    private void Initialize()
+    protected override void Initialize()
     {
-        _logger.LogInformation("Splash presenter initializing.");
+        _logger.LogInformation("Splash Presenter initializing.");
 
-        _splashView.InitializeView();
-
-        RegisterEventHandlers();
+        View?.InitializeView();
     }
 
-    private void RegisterEventHandlers()
+    protected override void RegisterEventHandlers()
     {
+        base.RegisterEventHandlers();
+
         OnPreloadCompleted += OnPreloadCompletedEventHandler;
-
-        _splashView.OnViewLoaded += OnViewLoadedEventHandler;
     }
 
-    private void UnregisterEventHandlers()
+    protected override void UnregisterEventHandlers()
     {
+        base.UnregisterEventHandlers();
+
         OnPreloadCompleted -= OnPreloadCompletedEventHandler;
-        _splashView.OnViewLoaded -= OnViewLoadedEventHandler;
     }
 
     private void UpdateProgress(string message)
     {
         _logger.LogInformation("Processed: {@Message}", message);
 
-        _splashView.Report(message);
+        View?.Report(message);
     }
 }

@@ -1,11 +1,20 @@
-﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Presenters;
-using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views;
+﻿namespace GameLauncher.ClientApps.Winforms.Presentation.Presenters;
 
-namespace GameLauncher.ClientApps.Winforms.Presentation.Presenters;
-
-internal class MainPresenter(IMainView mainView) : BasePresenter, IMainPresenter
+internal class MainPresenter(IMainView mainView, ILogger<MainPresenter> logger)
+    : BasePresenter(mainView, logger),
+        IMainPresenter
 {
-    private readonly IMainView _mainView = mainView;
+    public override IMainView? View => _view as IMainView;
 
-    public override IMainView GetView => _mainView;
+    protected override void Initialize()
+    {
+        _logger.LogInformation("Main Presenter initializing.");
+    }
+
+    protected override void OnViewShownEventHandler(object? sender, EventArgs e)
+    {
+        // Check Security Options
+
+        // Check Bearer Token
+    }
 }

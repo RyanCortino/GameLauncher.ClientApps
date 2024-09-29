@@ -2,8 +2,6 @@
 {
     public interface IMainView : IView
     {
-        void CloseView();
-
         void CloseAll();
     }
 }

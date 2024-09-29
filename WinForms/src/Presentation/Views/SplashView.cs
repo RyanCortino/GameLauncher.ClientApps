@@ -1,20 +1,14 @@
-﻿namespace GameLauncher.ClientApps.Winforms.Presentation.Forms;
+﻿using GameLauncher.ClientApps.Winforms.Presentation.Common.Utils;
 
-public partial class SplashView : Form, ISplashView
+namespace GameLauncher.ClientApps.Winforms.Presentation.Forms;
+
+public partial class SplashView : BaseView, ISplashView
 {
-    public SplashView(ILogger<SplashView> logger, IOptions<ApplicationOptions> appOptions)
+    public SplashView(ILogger<SplashView> logger)
+        : base(logger)
     {
         InitializeComponent();
-
-        _logger = logger;
-        _appOptions = appOptions.Value;
     }
-
-    private readonly ApplicationOptions _appOptions;
-
-    private readonly ILogger _logger;
-
-    public event EventHandler? OnViewLoaded;
 
     private Label? _assemblyVersionLabel;
 
@@ -38,27 +32,6 @@ public partial class SplashView : Form, ISplashView
         }
     }
 
-    private void SplashView_Load(object sender, EventArgs e)
-    {
-        OnViewLoaded?.Invoke(this, e);
-    }
-
-    public void InitializeView()
-    {
-        SetupSplashScreen();
-    }
-
-    public void CloseView()
-    {
-        if (this.InvokeRequired)
-        {
-            this.Invoke(this.Close);
-            return;
-        }
-
-        this.Close();
-    }
-
     public void Report(string value)
     {
         if (_reportProgressLabel is null)
@@ -73,8 +46,10 @@ public partial class SplashView : Form, ISplashView
         _reportProgressLabel.Text = value;
     }
 
-    private void SetupSplashScreen()
+    protected override void SetupAppearence()
     {
+        base.SetupAppearence();
+
         // Set the basic properties of the splash screen form
         this.FormBorderStyle = FormBorderStyle.None; // No borders for a clean look
         this.StartPosition = FormStartPosition.CenterScreen; // Center the splash screen
@@ -84,13 +59,9 @@ public partial class SplashView : Form, ISplashView
         this.ControlBox = false; // Disable close button
         this.MaximizeBox = false; // Disable maximize box
         this.MinimizeBox = false; // Disable minimize box
-        this.DoubleBuffered = true; // Prevent flickering
-        this.AutoScaleMode = AutoScaleMode.Dpi; // Enable High-Dpi Settings
 
         //this.BackgroundImage = Properties.Resources.SplashImage; // Set a custom splash image
         this.BackgroundImageLayout = ImageLayout.Zoom; // Adjust the layout of the background image
-
-        SetSplashScreenSize();
 
         AddProgressBar();
 
@@ -178,23 +149,5 @@ public partial class SplashView : Form, ISplashView
         };
 
         this.Controls.Add(progressBar);
-    }
-
-    private void SetSplashScreenSize()
-    {
-        // Calculate splash screen size as a proportion of screen dimensions
-        int screenWidth = Screen.PrimaryScreen?.Bounds.Width ?? 450;
-        int screenHeight = Screen.PrimaryScreen?.Bounds.Height ?? 800;
-
-        // Set the splash screen size to 30% of screen width and 20% of screen height
-        int splashWidth = (int)(screenWidth * 0.3);
-        int splashHeight = (int)(screenHeight * 0.2);
-
-        // Ensure minimum size for small screens (e.g., laptops)
-        splashWidth = Math.Max(splashWidth, 400); // Minimum width 400px
-        splashHeight = Math.Max(splashHeight, 300); // Minimum height 300px
-
-        // Set the calculated size
-        this.Size = new Size(splashWidth, splashHeight);
     }
 }

@@ -2,7 +2,7 @@
 {
     public interface IView
     {
-        event EventHandler? OnViewLoaded;
+        event EventHandler? OnViewShown;
 
         void CloseView();
 

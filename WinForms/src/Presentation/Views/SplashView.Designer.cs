@@ -37,7 +37,6 @@ partial class SplashView
         ClientSize = new Size(120, 0);
         Name = "SplashView";
         Text = "Splash";
-        Load += SplashView_Load;
         ResumeLayout(false);
     }
 

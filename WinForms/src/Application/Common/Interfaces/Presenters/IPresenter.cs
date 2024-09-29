@@ -4,5 +4,5 @@ namespace GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Present
 
 public interface IPresenter
 {
-    IView GetView { get; }
+    IView? View { get; }
 }
