@@ -1,4 +1,7 @@
-﻿using GameLauncher.ClientApps.Winforms.Presentation.Common.Context;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Menus;
+using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.MainMdiForm;
+using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.SplashScreen;
+using GameLauncher.ClientApps.Winforms.Presentation.Common.Context.Menus;
 using GameLauncher.ClientApps.Winforms.Presentation.Forms;
 using GameLauncher.ClientApps.Winforms.Presentation.Presenters;
 using Microsoft.Extensions.Configuration;
@@ -18,15 +21,20 @@ public static class DependencyInjection
         );
 
         //Context Menus
-        services.AddSingleton<ITaskbarContextMenu, TaskbarContextMenu>();
+        services
+            .AddSingleton<ITaskbarContextMenu, TaskbarContextMenu>()
+            .AddSingleton<INavigationContextMenu, NavigationContextMenu>();
 
-        //Views
-        services.AddTransient<ISplashView, SplashView>();
-        services.AddTransient<IMainView, MainView>();
+        //Form Views
+        services
+            .AddTransient<ISplashView, SplashView>()
+            //.AddTransient<ILoginView, LoginView>();
+            .AddTransient<IMainView, MainView>();
 
         //Presenters
-        services.AddTransient<ISplashPresenter, SplashPresenter>();
-        services.AddTransient<IMainPresenter, MainPresenter>();
+        services
+            .AddTransient<ISplashPresenter, SplashPresenter>()
+            .AddTransient<IMainPresenter, MainPresenter>();
 
         return services;
     }

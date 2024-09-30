@@ -1,4 +1,5 @@
 ﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Factories;
+using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.SplashScreen;
 using GameLauncher.ClientApps.Winforms.Presentation.Common.Utils;
 
 namespace GameLauncher.ClientApps.Winforms.Presentation.Presenters;

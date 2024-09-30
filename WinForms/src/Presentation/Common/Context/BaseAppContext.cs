@@ -1,4 +1,6 @@
-﻿namespace GameLauncher.ClientApps.Winforms.Presentation.Common.Context;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Menus;
+
+namespace GameLauncher.ClientApps.Winforms.Presentation.Common.Context;
 
 internal class BaseAppContext : ApplicationContext
 {

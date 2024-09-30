@@ -1,4 +1,5 @@
-﻿using GameLauncher.ClientApps.Winforms.Presentation.Common.Context;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Menus;
+using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.MainMdiForm;
 
 namespace GameLauncher.ClientApps.Winforms.Presentation.Presenters;
 
@@ -37,7 +38,7 @@ internal class MainPresenter(
                     100,
                     "Application Minimized",
                     "Your app is now minimized to the tray.",
-                    ToolTipIcon.Info
+                    (int)ToolTipIcon.Info
                 );
 
                 return;

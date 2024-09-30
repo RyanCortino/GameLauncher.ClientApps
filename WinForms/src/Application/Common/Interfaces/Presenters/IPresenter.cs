@@ -1,8 +1,8 @@
-﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms;
 
 namespace GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Presenters;
 
 public interface IPresenter
 {
-    IView? View { get; }
+    IFormView? View { get; }
 }

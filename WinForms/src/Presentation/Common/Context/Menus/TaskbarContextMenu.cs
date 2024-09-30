@@ -1,4 +1,6 @@
-﻿namespace GameLauncher.ClientApps.Winforms.Presentation.Common.Context;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Menus;
+
+namespace GameLauncher.ClientApps.Winforms.Presentation.Common.Context.Menus;
 
 internal class TaskbarContextMenu : ITaskbarContextMenu
 {
@@ -20,14 +22,9 @@ internal class TaskbarContextMenu : ITaskbarContextMenu
         InitializeContextMenu();
     }
 
-    public void ShowBalloonTip(
-        int timeout,
-        string tipTitle,
-        string tipText,
-        ToolTipIcon toolTipIcon = ToolTipIcon.Info
-    )
+    public void ShowBalloonTip(int timeout, string tipTitle, string tipText, int toolTipIconIndex)
     {
-        _notifyIcon.ShowBalloonTip(timeout, tipTitle, tipText, toolTipIcon);
+        _notifyIcon.ShowBalloonTip(timeout, tipTitle, tipText, (ToolTipIcon)toolTipIconIndex);
     }
 
     private void InitializeContextMenu()
@@ -42,11 +39,7 @@ internal class TaskbarContextMenu : ITaskbarContextMenu
         // Create and initialize the context menu
         var contextMenu = new ContextMenuStrip();
 
-        contextMenu.Items.Add(
-            "Exit",
-            null,
-            (s, e) => OnExitClickedEventHandler?.Invoke(this, EventArgs.Empty)
-        );
+        contextMenu.Items.Add("Exit", null, (s, e) => OnExitClickedEventHandler?.Invoke(this, e));
 
         return contextMenu;
     }
@@ -62,18 +55,4 @@ internal class TaskbarContextMenu : ITaskbarContextMenu
             ContextMenuStrip = contextMenuStrip,
         };
     }
-}
-
-internal interface ITaskbarContextMenu
-{
-    //void Intialize();
-    event EventHandler? OnNotifyIconDoubleClickedEventHandler;
-    event EventHandler? OnExitClickedEventHandler;
-
-    void ShowBalloonTip(
-        int timeout,
-        string tipTitle,
-        string tipText,
-        ToolTipIcon toolTipIcon = ToolTipIcon.Info
-    );
 }

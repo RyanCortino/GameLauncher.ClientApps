@@ -1,4 +1,6 @@
-﻿namespace GameLauncher.ClientApps.Winforms.Presentation.Forms;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.MainMdiForm;
+
+namespace GameLauncher.ClientApps.Winforms.Presentation.Forms;
 
 public partial class MainView : BaseView, IMainView
 {

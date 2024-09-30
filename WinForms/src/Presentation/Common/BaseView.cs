@@ -1,6 +1,8 @@
-﻿namespace GameLauncher.ClientApps.Winforms.Presentation.Common;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms;
 
-public class BaseView : Form, IView
+namespace GameLauncher.ClientApps.Winforms.Presentation.Common;
+
+public class BaseView : Form, IFormView
 {
     public BaseView(ILogger<BaseView> logger)
     {

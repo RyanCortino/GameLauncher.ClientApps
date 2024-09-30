@@ -1,4 +1,7 @@
-﻿namespace GameLauncher.ClientApps.Winforms.Presentation.Common.Context;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Menus;
+using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.SplashScreen;
+
+namespace GameLauncher.ClientApps.Winforms.Presentation.Common.Context;
 
 internal class SplashScreenAppContext(
     ISplashPresenter splashPresenter,

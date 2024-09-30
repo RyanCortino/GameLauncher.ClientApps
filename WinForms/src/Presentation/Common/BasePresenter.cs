@@ -1,8 +1,10 @@
-﻿namespace GameLauncher.ClientApps.Winforms.Presentation.Common;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms;
+
+namespace GameLauncher.ClientApps.Winforms.Presentation.Common;
 
 public abstract class BasePresenter : IPresenter
 {
-    protected BasePresenter(IView view, ILogger<BasePresenter> logger)
+    protected BasePresenter(IFormView view, ILogger<BasePresenter> logger)
     {
         _logger = logger;
 
@@ -18,11 +20,11 @@ public abstract class BasePresenter : IPresenter
         UnregisterEventHandlers();
     }
 
-    protected readonly IView? _view;
+    protected readonly IFormView? _view;
 
     protected readonly ILogger<BasePresenter> _logger;
 
-    public virtual IView? View => _view;
+    public virtual IFormView? View => _view;
 
     protected virtual void OnViewShownEventHandler(object? sender, EventArgs e) { }
 
