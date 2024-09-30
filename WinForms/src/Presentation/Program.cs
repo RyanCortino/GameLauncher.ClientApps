@@ -41,7 +41,7 @@ namespace GameLauncher.ClientApps.Winforms.Presentation
                 // Register the (required) app contexts
                 .ConfigureServices(
                     (services) =>
-                        services.AddTransient<ApplicationContext, SplashScreenAppContext>()
+                        services.AddSingleton<ApplicationContext, SplashScreenAppContext>()
                 )
                 // Registers project services
                 .ConfigureServices(

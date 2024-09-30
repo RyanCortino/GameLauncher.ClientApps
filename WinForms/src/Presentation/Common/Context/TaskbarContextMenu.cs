@@ -20,6 +20,16 @@ internal class TaskbarContextMenu : ITaskbarContextMenu
         InitializeContextMenu();
     }
 
+    public void ShowBalloonTip(
+        int timeout,
+        string tipTitle,
+        string tipText,
+        ToolTipIcon toolTipIcon = ToolTipIcon.Info
+    )
+    {
+        _notifyIcon.ShowBalloonTip(timeout, tipTitle, tipText, toolTipIcon);
+    }
+
     private void InitializeContextMenu()
     {
         // Handle double-click event on the notify icon to open the main form
@@ -59,4 +69,11 @@ internal interface ITaskbarContextMenu
     //void Intialize();
     event EventHandler? OnNotifyIconDoubleClickedEventHandler;
     event EventHandler? OnExitClickedEventHandler;
+
+    void ShowBalloonTip(
+        int timeout,
+        string tipTitle,
+        string tipText,
+        ToolTipIcon toolTipIcon = ToolTipIcon.Info
+    );
 }

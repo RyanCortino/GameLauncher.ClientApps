@@ -15,6 +15,7 @@ public class BaseView : Form, IView
     }
 
     public event EventHandler? OnViewShown;
+    public event EventHandler? OnViewResized;
 
     protected readonly ILogger _logger;
 
@@ -39,21 +40,31 @@ public class BaseView : Form, IView
     {
         this.Load += View_Load;
         this.Shown += View_Shown;
+        this.Resize += View_Resized;
     }
 
     private void DeregisterEventHandlers()
     {
         this.Load -= View_Load;
         this.Shown -= View_Shown;
+        this.Resize -= View_Resized;
     }
 
     // Virtual method to handle Form Load event
-    protected virtual void View_Load(object? sender, EventArgs e) { }
+    protected virtual void View_Load(object? sender, EventArgs e)
+    {
+        _logger.LogInformation("Loaded {viewType}.", this.GetType().Name);
+    }
 
     // Virtual method to handle Form Shown event
     protected virtual void View_Shown(object? sender, EventArgs e)
     {
         OnViewShown?.Invoke(this, e);
+    }
+
+    protected virtual void View_Resized(object? sender, EventArgs e)
+    {
+        OnViewResized?.Invoke(this, e);
     }
 
     protected virtual void SetupAppearence()
@@ -62,6 +73,7 @@ public class BaseView : Form, IView
         this.Text = "Base Form Title";
         this.AutoScaleMode = AutoScaleMode.Dpi; // Enable High-Dpi Settings
         this.DoubleBuffered = true; // Prevent flickering
+        this.ShowInTaskbar = true;
     }
 
     protected virtual void SetSize(

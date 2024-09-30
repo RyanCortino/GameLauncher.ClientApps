@@ -26,6 +26,8 @@ public abstract class BasePresenter : IPresenter
 
     protected virtual void OnViewShownEventHandler(object? sender, EventArgs e) { }
 
+    protected virtual void OnViewResizedEventHandler(object? sender, EventArgs e) { }
+
     protected virtual void Initialize()
     {
         _logger.LogInformation("Base presenter initializing.");
@@ -37,6 +39,7 @@ public abstract class BasePresenter : IPresenter
             return;
 
         View.OnViewShown += OnViewShownEventHandler;
+        View.OnViewResized += OnViewResizedEventHandler;
     }
 
     protected virtual void UnregisterEventHandlers()
@@ -45,5 +48,6 @@ public abstract class BasePresenter : IPresenter
             return;
 
         View.OnViewShown -= OnViewShownEventHandler;
+        View.OnViewResized -= OnViewResizedEventHandler;
     }
 }

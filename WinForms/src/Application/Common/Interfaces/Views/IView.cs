@@ -3,6 +3,7 @@
     public interface IView
     {
         event EventHandler? OnViewShown;
+        event EventHandler? OnViewResized;
 
         void CloseView();
 
