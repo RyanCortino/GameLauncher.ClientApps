@@ -1,25 +1,24 @@
-﻿namespace GameLauncher.ClientApps.Winforms.Presentation.Common.AppContext;
+﻿namespace GameLauncher.ClientApps.Winforms.Presentation.Common.Context;
 
-internal class AppContextWithSplashScreen(
-    IMainPresenter mainPresenter,
+internal class SplashScreenAppContext(
     ISplashPresenter splashPresenter,
-    ILogger<AppContextWithSplashScreen> logger
-) : ApplicationContext(splashPresenter.View as Form)
+    ITaskbarContextMenu taskbarContextMenu,
+    IMainPresenter mainPresenter,
+    ILogger<SplashScreenAppContext> logger
+) : BaseAppContext(taskbarContextMenu, splashPresenter, logger)
 {
-    private readonly ILogger _logger = logger;
-
     private readonly IMainPresenter _mainPresenter = mainPresenter;
 
     protected override void OnMainFormClosed(object? sender, EventArgs e)
     {
         if (sender is ISplashView)
         {
+            _logger.LogInformation("Splash View closed. Launching Main View.");
+
             LaunchMainForm();
 
             return;
         }
-
-        _logger.LogInformation("Exiting Application.");
 
         base.OnMainFormClosed(sender, e);
     }
@@ -28,6 +27,6 @@ internal class AppContextWithSplashScreen(
     {
         MainForm = _mainPresenter.View as Form;
 
-        MainForm?.Show();
+        ShowMainForm();
     }
 }

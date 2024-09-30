@@ -1,4 +1,5 @@
-﻿using GameLauncher.ClientApps.Winforms.Presentation.Forms;
+﻿using GameLauncher.ClientApps.Winforms.Presentation.Common.Context;
+using GameLauncher.ClientApps.Winforms.Presentation.Forms;
 using GameLauncher.ClientApps.Winforms.Presentation.Presenters;
 using Microsoft.Extensions.Configuration;
 
@@ -15,6 +16,9 @@ public static class DependencyInjection
         services.Configure<ApplicationOptions>(
             configuration.GetSection(nameof(ApplicationOptions))
         );
+
+        //Context Menus
+        services.AddSingleton<ITaskbarContextMenu, TaskbarContextMenu>();
 
         //Views
         services.AddTransient<ISplashView, SplashView>();

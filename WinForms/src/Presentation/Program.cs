@@ -1,4 +1,4 @@
-using GameLauncher.ClientApps.Winforms.Presentation.Common.AppContext;
+using GameLauncher.ClientApps.Winforms.Presentation.Common.Context;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -38,10 +38,10 @@ namespace GameLauncher.ClientApps.Winforms.Presentation
             Host.CreateDefaultBuilder()
                 // Setup App Settings
                 .ConfigureAppConfiguration(BuildConfig)
-                // Register the (required) app context
+                // Register the (required) app contexts
                 .ConfigureServices(
                     (services) =>
-                        services.AddTransient<ApplicationContext, AppContextWithSplashScreen>()
+                        services.AddTransient<ApplicationContext, SplashScreenAppContext>()
                 )
                 // Registers project services
                 .ConfigureServices(
