@@ -13,9 +13,9 @@ internal class MainView(INavigationView navigationViewUC, ILogger<MainView> logg
     {
         base.InitializeView();
 
-        _navigationViewUC.InitializeView();
-
         this.Controls.Add(_navigationViewUC as UserControl);
+
+        _navigationViewUC.InitializeView();
     }
 
     public void CloseAll()

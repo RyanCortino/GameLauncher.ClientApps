@@ -17,13 +17,6 @@ internal class ImageResourceFactory : ResourceFactory<Image>, IResourceFactory<I
 
         var image = Image.FromStream(imageStream);
 
-        if (image is not null)
-        {
-            var imageName = Path.GetFileNameWithoutExtension(imageFileName);
-
-            return Image.FromFile(imageName);
-        }
-
-        return default!;
+        return image is not null ? image : default!;
     }
 }

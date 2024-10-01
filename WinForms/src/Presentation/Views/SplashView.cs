@@ -1,19 +1,18 @@
-﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.SplashScreen;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Factories;
+using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.SplashScreen;
 using GameLauncher.ClientApps.Winforms.Presentation.Common.Utils;
 
 namespace GameLauncher.ClientApps.Winforms.Presentation.Forms;
 
-public partial class SplashView : BaseView, ISplashView
+internal class SplashView(IResourceFactory<Image> imageFactory, ILogger<SplashView> logger)
+    : BaseView(logger),
+        ISplashView
 {
-    public SplashView(ILogger<SplashView> logger)
-        : base(logger)
-    {
-        InitializeComponent();
-    }
-
     private Label? _assemblyVersionLabel;
 
     private Label? _reportProgressLabel;
+
+    private readonly IResourceFactory<Image> _imageFactory = imageFactory;
 
     public string AssemblyVersion
     {
@@ -52,6 +51,7 @@ public partial class SplashView : BaseView, ISplashView
         base.SetupAppearence();
 
         // Set the basic properties of the splash screen form
+        this.Text = "Splash Screen";
         this.FormBorderStyle = FormBorderStyle.None; // No borders for a clean look
         this.StartPosition = FormStartPosition.CenterScreen; // Center the splash screen
         this.TopMost = true; // Ensure the splash screen is always on top
@@ -61,7 +61,7 @@ public partial class SplashView : BaseView, ISplashView
         this.MaximizeBox = false; // Disable maximize box
         this.MinimizeBox = false; // Disable minimize box
 
-        //this.BackgroundImage = Properties.Resources.SplashImage; // Set a custom splash image
+        this.BackgroundImage = _imageFactory.GetResource("SplashImage"); // Set a custom splash image
         this.BackgroundImageLayout = ImageLayout.Zoom; // Adjust the layout of the background image
 
         AddProgressBar();

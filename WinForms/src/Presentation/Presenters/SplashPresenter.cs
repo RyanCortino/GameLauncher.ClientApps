@@ -8,6 +8,7 @@ internal class SplashPresenter(
     ISplashView splashView,
     IOptions<ApplicationOptions> applicationOptions,
     IResourceFactory<Image> imageFactory,
+    IResourceFactory<Icon> iconFactory,
     IFontFactory fontFactory,
     ILogger<SplashPresenter> logger
 ) : BasePresenter(splashView, logger), ISplashPresenter
@@ -15,8 +16,8 @@ internal class SplashPresenter(
     private readonly ApplicationOptions _applicationOptions = applicationOptions.Value;
 
     private readonly IFontFactory _fontFactory = fontFactory;
-
     private readonly IResourceFactory<Image> _imageFactory = imageFactory;
+    private readonly IResourceFactory<Icon> _iconFactory = iconFactory;
 
     public event EventHandler? OnPreloadCompleted;
 
@@ -37,18 +38,6 @@ internal class SplashPresenter(
     {
         UpdateProgress("Loading complete.");
 
-        _logger.LogInformation(
-            "{Images} loaded into {ImageFactory}.",
-            _imageFactory.Count,
-            _imageFactory
-        );
-
-        _logger.LogInformation(
-            "{Fonts} loaded into {FontFactory}.",
-            _fontFactory.Count,
-            _fontFactory
-        );
-
         await Delay(250);
 
         View?.CloseView();
@@ -67,11 +56,9 @@ internal class SplashPresenter(
                 // Load fonts from the embedded resources
                 LoadFonts(),
                 // Load images from the embedded resources
-                LoadImages(),
-                // DEMO ONLY.
-                DelayWithProgressUpdate(800, "Example Resource 1 has finished loading."),
-                DelayWithProgressUpdate(400, "Example Resource 2 has finished loading."),
-                DelayWithProgressUpdate(1200, "Example Resource 3 has finished loading."),
+                Load(_imageFactory, ["SplashImage.png"]),
+                // Load icons from the embedded resources
+                Load(_iconFactory, ["GameLauncher.ico", "Home.ico", "Library.ico", "Settings.ico"]),
             ];
 
             Task.WaitAll(loadingTasks);
@@ -91,34 +78,33 @@ internal class SplashPresenter(
         });
     }
 
-    private Task LoadImages(string[]? imageFileNames = null)
+    private Task Load<TType>(IResourceFactory<TType> factory, string[] resourceFilenames)
     {
-        imageFileNames ??=
-        [
-            "Home.png",
-            "Library.png",
-            "Login.png",
-            "Logout.png",
-            "Menu.png",
-            "Settings.png",
-            "ProgressActivity.png",
-            "AccountCircle.png",
-        ];
-
         return Task.Run(() =>
         {
-            foreach (var imageFileName in imageFileNames)
+            foreach (var filename in resourceFilenames)
             {
-                _imageFactory.LoadResource(
-                    CoreAssembly.Reference.GetManifestResourceStream(
-                        $"{CoreAssembly.Reference.GetName().Name}.{imageFileName.Replace("/", ".")}"
-                    )!,
-                    Path.GetFileNameWithoutExtension(imageFileName),
-                    imageFileName
+                var resourceStream = CoreAssembly.Reference.GetManifestResourceStream(
+                    $"{CoreAssembly.Name}.Resources.{filename.Replace("/", ".")}"
                 );
 
-                UpdateProgress($"Loaded Image File: {imageFileName}");
+                if (resourceStream is null)
+                    continue;
+
+                factory.LoadResource(
+                    resourceStream,
+                    Path.GetFileNameWithoutExtension(filename),
+                    filename
+                );
+
+                UpdateProgress($"Loaded resource by name: {filename}");
             }
+
+            _logger.LogInformation(
+                "{Count} resources loaded into {Factory}.",
+                factory.Count,
+                factory.GetType().Name
+            );
         });
     }
 
@@ -130,15 +116,23 @@ internal class SplashPresenter(
         {
             foreach (var fontFileName in fontFileNames)
             {
-                _fontFactory.LoadFont(
-                    fontFileName,
-                    CoreAssembly.Reference.GetManifestResourceStream(
-                        $"{CoreAssembly.Reference.GetName().Name}.{fontFileName.Replace("/", ".")}"
-                    )!
+                var fontStream = CoreAssembly.Reference.GetManifestResourceStream(
+                    $"{CoreAssembly.Name}.Resources.{fontFileName.Replace("/", ".")}"
                 );
 
-                UpdateProgress($"Loaded Font File: {fontFileName}");
+                if (fontStream is null)
+                    continue;
+
+                _fontFactory.LoadFont(fontFileName, fontStream);
+
+                UpdateProgress($"Loaded font by name: {fontFileName}");
             }
+
+            _logger.LogInformation(
+                "{Count} fonts loaded into {Factory}.",
+                _fontFactory.Count,
+                _fontFactory.GetType().Name
+            );
         });
     }
 

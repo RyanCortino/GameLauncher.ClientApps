@@ -13,6 +13,7 @@ public static class DependencyInjection
     )
     {
         // Factories
+        services.AddSingleton<IResourceFactory<Icon>, IconResourceFactory>();
         services.AddSingleton<IResourceFactory<Image>, ImageResourceFactory>();
         services.AddSingleton<IFontFactory, FontFactory>();
 

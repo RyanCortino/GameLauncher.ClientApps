@@ -13,10 +13,21 @@
 		<AssemblyName>GameLauncher.ClientApps.Winforms.Presentation</AssemblyName>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <Compile Remove="Resources\Fonts\**" />
+	  <EmbeddedResource Remove="Resources\Fonts\**" />
+	  <None Remove="Resources\Fonts\**" />
+	</ItemGroup>
+
   <ItemGroup>
-	  <None Remove="Resources\Fonts\Montagu_Slab\MontaguSlab.ttf" />
-	  <None Remove="Resources\Fonts\Montserrat\Montserrat-Italic.ttf" />
-	  <None Remove="Resources\Fonts\Montserrat\Montserrat.ttf" />
+	  <None Remove="Resources\GameLauncher.ico" />
+	  <None Remove="Resources\Home.ico" />
+	  <None Remove="Resources\Library.ico" />
+	  <None Remove="Resources\MontaguSlab.ttf" />
+	  <None Remove="Resources\Montserrat-Italic.ttf" />
+	  <None Remove="Resources\Montserrat.ttf" />
+	  <None Remove="Resources\Settings.ico" />
+	  <None Remove="Resources\SplashImage.png" />
 	</ItemGroup>
 
   <ItemGroup>
@@ -40,13 +51,14 @@
 
 	
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Fonts\Montagu_Slab\MontaguSlab.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Fonts\Montserrat\Montserrat-Italic.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Fonts\Montserrat\Montserrat.ttf">
+    <EmbeddedResource Include="Resources\GameLauncher.ico" />
+    <EmbeddedResource Include="Resources\Home.ico" />
+    <EmbeddedResource Include="Resources\Library.ico" />
+    <EmbeddedResource Include="Resources\MontaguSlab.ttf" />
+    <EmbeddedResource Include="Resources\Montserrat-Italic.ttf" />
+    <EmbeddedResource Include="Resources\Montserrat.ttf" />
+    <EmbeddedResource Include="Resources\Settings.ico" />
+    <EmbeddedResource Include="Resources\SplashImage.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
@@ -66,20 +78,13 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Views\MainViewOld.cs">
-      <SubType>Form</SubType>
-      <CustomToolNamespace></CustomToolNamespace>
-    </Compile>
-    <Compile Update="Views\SplashView.cs">
-      <SubType>Form</SubType>
-      <CustomToolNamespace></CustomToolNamespace>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <CustomToolNamespace></CustomToolNamespace>
     </EmbeddedResource>
   </ItemGroup>
 
