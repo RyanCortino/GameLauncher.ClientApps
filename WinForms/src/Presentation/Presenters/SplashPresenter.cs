@@ -149,7 +149,7 @@ internal class SplashPresenter(
 
     protected override void Initialize()
     {
-        _logger.LogInformation("Splash Presenter initializing.");
+        base.Initialize();
 
         View?.InitializeView();
     }

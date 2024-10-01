@@ -1,108 +1,21 @@
 ﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.MainMdiForm;
+using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.UserControls.Navigation;
 
-namespace GameLauncher.ClientApps.Winforms.Presentation.Forms;
+namespace GameLauncher.ClientApps.Winforms.Presentation.Views;
 
-public partial class MainView : BaseView, IMainView
+internal class MainView(INavigationView navigationViewUC, ILogger<MainView> logger)
+    : BaseView(logger),
+        IMainView
 {
-    public MainView(ILogger<MainView> logger)
-        : base(logger)
+    private readonly INavigationView _navigationViewUC = navigationViewUC;
+
+    public override void InitializeView()
     {
-        InitializeComponent();
-    }
+        base.InitializeView();
 
-    private int _childFormNumber = 0;
+        _navigationViewUC.InitializeView();
 
-    private void ShowNewForm(object sender, EventArgs e)
-    {
-        Form childForm =
-            new()
-            {
-                MdiParent = this,
-
-                Text = "Window " + _childFormNumber++,
-            };
-
-        childForm.Show();
-    }
-
-    private void OpenFile(object sender, EventArgs e)
-    {
-        OpenFileDialog openFileDialog =
-            new()
-            {
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*",
-            };
-
-        if (openFileDialog.ShowDialog(this) == DialogResult.OK)
-        {
-            _ = openFileDialog.FileName;
-        }
-    }
-
-    private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        SaveFileDialog saveFileDialog =
-            new()
-            {
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-
-                Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*",
-            };
-
-        if (saveFileDialog.ShowDialog(this) == DialogResult.OK)
-        {
-            _ = saveFileDialog.FileName;
-        }
-    }
-
-    private void ExitToolsStripMenuItem_Click(object sender, EventArgs e)
-    {
-        this.Close();
-    }
-
-    private void CutToolStripMenuItem_Click(object sender, EventArgs e) { }
-
-    private void CopyToolStripMenuItem_Click(object sender, EventArgs e) { }
-
-    private void PasteToolStripMenuItem_Click(object sender, EventArgs e) { }
-
-    private void ToolBarToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        toolStrip.Visible = toolBarToolStripMenuItem.Checked;
-    }
-
-    private void StatusBarToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        statusStrip.Visible = statusBarToolStripMenuItem.Checked;
-    }
-
-    private void CascadeToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        LayoutMdi(MdiLayout.Cascade);
-    }
-
-    private void TileVerticalToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        LayoutMdi(MdiLayout.TileVertical);
-    }
-
-    private void TileHorizontalToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        LayoutMdi(MdiLayout.TileHorizontal);
-    }
-
-    private void ArrangeIconsToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        LayoutMdi(MdiLayout.ArrangeIcons);
-    }
-
-    private void CloseAllToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        foreach (Form childForm in MdiChildren)
-        {
-            childForm.Close();
-        }
+        this.Controls.Add(_navigationViewUC as UserControl);
     }
 
     public void CloseAll()

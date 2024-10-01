@@ -11,8 +11,6 @@ public abstract class BasePresenter : IPresenter
         _view = view;
 
         Initialize();
-
-        RegisterEventHandlers();
     }
 
     ~BasePresenter()
@@ -32,7 +30,9 @@ public abstract class BasePresenter : IPresenter
 
     protected virtual void Initialize()
     {
-        _logger.LogInformation("Base presenter initializing.");
+        _logger.LogInformation("Initializing {viewType}.", this.GetType().Name);
+
+        RegisterEventHandlers();
     }
 
     protected virtual void RegisterEventHandlers()

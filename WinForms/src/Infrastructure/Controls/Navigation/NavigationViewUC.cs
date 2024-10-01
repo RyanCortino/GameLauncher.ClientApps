@@ -20,9 +20,9 @@ public partial class NavigationViewUC : BaseViewUC, INavigationView
 
     public override void InitializeView()
     {
-        base.InitializeView();
-
         SetupControls();
+
+        base.InitializeView();
     }
 
     protected override void SetupAppearence()
@@ -48,14 +48,14 @@ public partial class NavigationViewUC : BaseViewUC, INavigationView
 
     private void GenerateButtonsFromContextMenu()
     {
-        if (ContextMenuStrip is null || _buttonPanel is null)
+        if (_contextMenu is null || _buttonPanel is null)
             return;
 
         // Clear any existing buttons from the panel
         _buttonPanel.Controls.Clear();
 
         // Iterate through each ToolStripMenuItem in the ContextMenuStrip
-        foreach (ToolStripItem menuItem in ContextMenuStrip.Items)
+        foreach (var menuItem in _contextMenu.Items)
         {
             var button = new Button()
             {

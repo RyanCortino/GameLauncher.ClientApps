@@ -18,7 +18,9 @@ internal class MainPresenter(
 
     protected override void Initialize()
     {
-        _logger.LogInformation("Main Presenter initializing.");
+        base.Initialize();
+
+        View?.InitializeView();
     }
 
     protected override void OnViewResizedEventHandler(object? sender, EventArgs e)

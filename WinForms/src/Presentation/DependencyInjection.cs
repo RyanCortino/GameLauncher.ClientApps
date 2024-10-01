@@ -4,6 +4,7 @@ using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms
 using GameLauncher.ClientApps.Winforms.Presentation.Common.Context.Menus;
 using GameLauncher.ClientApps.Winforms.Presentation.Forms;
 using GameLauncher.ClientApps.Winforms.Presentation.Presenters;
+using GameLauncher.ClientApps.Winforms.Presentation.Views;
 using Microsoft.Extensions.Configuration;
 
 namespace Microsoft.Extensions.DependencyInjection;
