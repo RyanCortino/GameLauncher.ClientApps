@@ -12,6 +12,8 @@ internal class BaseAppContext : ApplicationContext
         : base(presenter.View as Form)
     {
         _taskbarContextMenu = taskbarContextMenu;
+        _taskbarContextMenu.InitializeContextMenu();
+
         _presenter = presenter;
         _logger = logger;
 

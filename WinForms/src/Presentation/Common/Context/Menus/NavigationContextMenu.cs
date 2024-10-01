@@ -4,20 +4,25 @@ using GameLauncher.ClientApps.Winforms.Presentation.Common.Utils;
 
 namespace GameLauncher.ClientApps.Winforms.Presentation.Common.Context.Menus;
 
-internal class NavigationContextMenu : INavigationContextMenu
+internal class NavigationContextMenu(IResourceFactory<Image> imageFactory) : INavigationContextMenu
 {
+    ~NavigationContextMenu()
+    {
+        _contextMenu?.Dispose();
+    }
+
     public event EventHandler? OnHomeClickedEventHandler;
     public event EventHandler? OnLibraryClickedEventHandler;
     public event EventHandler? OnSettingsClickedEventHandler;
 
-    private readonly IResourceFactory<Image> _imageFactory;
-    private readonly ContextMenuStrip? _contextMenu;
+    private readonly IResourceFactory<Image> _imageFactory = imageFactory;
+    private readonly ContextMenuStrip? _contextMenu = new ContextMenuStrip();
 
     public IEnumerable<IMenuItem> Items
     {
         get
         {
-            if (_contextMenu == null)
+            if (_contextMenu is null)
                 yield break;
 
             foreach (ToolStripItem item in _contextMenu.Items)
@@ -27,25 +32,7 @@ internal class NavigationContextMenu : INavigationContextMenu
         }
     }
 
-    public NavigationContextMenu(IResourceFactory<Image> imageFactory)
-    {
-        _imageFactory = imageFactory;
-        _contextMenu = new ContextMenuStrip();
-
-        Initialize();
-    }
-
-    ~NavigationContextMenu()
-    {
-        _contextMenu?.Dispose();
-    }
-
-    private void Initialize()
-    {
-        SetupNavigationMenu();
-    }
-
-    private void SetupNavigationMenu()
+    public void InitializeContextMenu()
     {
         if (_contextMenu is null)
             return;

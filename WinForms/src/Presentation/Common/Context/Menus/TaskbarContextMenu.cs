@@ -1,37 +1,48 @@
-﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Menus;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Factories;
+using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Menus;
+using GameLauncher.ClientApps.Winforms.Presentation.Common.Utils;
 
 namespace GameLauncher.ClientApps.Winforms.Presentation.Common.Context.Menus;
 
-internal class TaskbarContextMenu : ITaskbarContextMenu
+internal class TaskbarContextMenu(IResourceFactory<Icon> iconFactory) : ITaskbarContextMenu
 {
-    public event EventHandler? OnNotifyIconDoubleClickedEventHandler;
-    public event EventHandler? OnExitClickedEventHandler;
-
-    private readonly NotifyIcon _notifyIcon;
-
     ~TaskbarContextMenu()
     {
         _notifyIcon?.ContextMenuStrip?.Dispose();
         _notifyIcon?.Dispose();
     }
 
-    public TaskbarContextMenu()
+    public event EventHandler? OnNotifyIconDoubleClickedEventHandler;
+    public event EventHandler? OnExitClickedEventHandler;
+
+    private NotifyIcon? _notifyIcon;
+
+    public IEnumerable<IMenuItem> Items
+    {
+        get
+        {
+            if (_notifyIcon.ContextMenuStrip is null)
+                yield break;
+
+            foreach (ToolStripItem item in _notifyIcon.ContextMenuStrip.Items)
+            {
+                yield return new MenuItemWrapper(item);
+            }
+        }
+    }
+
+    public void InitializeContextMenu()
     {
         _notifyIcon = MakeNotifyIcon(BuildContextMenu());
 
-        InitializeContextMenu();
+        // Handle double-click event on the notify icon to open the main form
+        _notifyIcon.DoubleClick += (s, e) =>
+            OnNotifyIconDoubleClickedEventHandler?.Invoke(this, EventArgs.Empty);
     }
 
     public void ShowBalloonTip(int timeout, string tipTitle, string tipText, int toolTipIconIndex)
     {
-        _notifyIcon.ShowBalloonTip(timeout, tipTitle, tipText, (ToolTipIcon)toolTipIconIndex);
-    }
-
-    private void InitializeContextMenu()
-    {
-        // Handle double-click event on the notify icon to open the main form
-        _notifyIcon.DoubleClick += (s, e) =>
-            OnNotifyIconDoubleClickedEventHandler?.Invoke(this, EventArgs.Empty);
+        _notifyIcon?.ShowBalloonTip(timeout, tipTitle, tipText, (ToolTipIcon)toolTipIconIndex);
     }
 
     private ContextMenuStrip BuildContextMenu()
@@ -49,7 +60,7 @@ internal class TaskbarContextMenu : ITaskbarContextMenu
         // Initialize the NotifyIcon component
         return new NotifyIcon
         {
-            Icon = Properties.Resources.Home,
+            Icon = Properties.Resources.GameLauncher,
             Text = "Game Launcher",
             Visible = true,
             ContextMenuStrip = contextMenuStrip,

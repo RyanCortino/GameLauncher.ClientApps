@@ -1,6 +1,6 @@
 ﻿namespace GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Menus;
 
-public interface ITaskbarContextMenu
+public interface ITaskbarContextMenu : IContextMenu
 {
     //void Intialize();
     event EventHandler? OnNotifyIconDoubleClickedEventHandler;
