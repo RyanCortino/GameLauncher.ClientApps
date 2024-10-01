@@ -1,18 +1,13 @@
-﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Factories;
-using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.SplashScreen;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.SplashScreen;
 using GameLauncher.ClientApps.Winforms.Presentation.Common.Utils;
 
 namespace GameLauncher.ClientApps.Winforms.Presentation.Forms;
 
-internal class SplashView(IResourceFactory<Image> imageFactory, ILogger<SplashView> logger)
-    : BaseView(logger),
-        ISplashView
+internal class SplashView(ILogger<SplashView> logger) : BaseView(logger), ISplashView
 {
     private Label? _assemblyVersionLabel;
 
     private Label? _reportProgressLabel;
-
-    private readonly IResourceFactory<Image> _imageFactory = imageFactory;
 
     public string AssemblyVersion
     {
@@ -61,7 +56,7 @@ internal class SplashView(IResourceFactory<Image> imageFactory, ILogger<SplashVi
         this.MaximizeBox = false; // Disable maximize box
         this.MinimizeBox = false; // Disable minimize box
 
-        this.BackgroundImage = _imageFactory.GetResource("SplashImage"); // Set a custom splash image
+        this.BackgroundImage = Image.FromStream(new MemoryStream(Properties.Resources.SplashImage));
         this.BackgroundImageLayout = ImageLayout.Zoom; // Adjust the layout of the background image
 
         AddProgressBar();

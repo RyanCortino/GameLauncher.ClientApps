@@ -23,8 +23,12 @@ internal class SplashPresenter(
 
     public override ISplashView? View => _view as ISplashView;
 
-    protected override async void OnViewShownEventHandler(object? sender, EventArgs e) =>
+    protected override async void OnViewShownEventHandler(object? sender, EventArgs e)
+    {
+        base.OnViewShownEventHandler(sender, e);
+
         await Task.Run(() => PreloadAsync(sender, e));
+    }
 
     private async void OnPreloadCompletedEventHandler(object? sender, EventArgs e) =>
         await Task.Run(() => PreloadCompletedAsync(sender, e));
@@ -56,7 +60,7 @@ internal class SplashPresenter(
                 // Load fonts from the embedded resources
                 LoadFonts(),
                 // Load images from the embedded resources
-                Load(_imageFactory, ["SplashImage.png"]),
+                Load(_imageFactory, []),
                 // Load icons from the embedded resources
                 Load(_iconFactory, ["GameLauncher.ico", "Home.ico", "Library.ico", "Settings.ico"]),
             ];
@@ -141,9 +145,9 @@ internal class SplashPresenter(
         return Task.Run(() => { });
     }
 
-    protected override void Initialize()
+    public override void InitializePresenter()
     {
-        base.Initialize();
+        base.InitializePresenter();
 
         View?.InitializeView();
     }

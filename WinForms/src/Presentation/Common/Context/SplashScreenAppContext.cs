@@ -28,6 +28,8 @@ internal class SplashScreenAppContext(
 
     private void LaunchMainForm()
     {
+        _mainPresenter.InitializePresenter();
+
         MainForm = _mainPresenter.View as Form;
 
         ShowMainForm();

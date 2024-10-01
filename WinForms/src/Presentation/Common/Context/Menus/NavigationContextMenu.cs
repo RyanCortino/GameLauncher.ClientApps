@@ -4,7 +4,7 @@ using GameLauncher.ClientApps.Winforms.Presentation.Common.Utils;
 
 namespace GameLauncher.ClientApps.Winforms.Presentation.Common.Context.Menus;
 
-internal class NavigationContextMenu(IResourceFactory<Image> imageFactory) : INavigationContextMenu
+internal class NavigationContextMenu(IResourceFactory<Icon> iconFactory) : INavigationContextMenu
 {
     ~NavigationContextMenu()
     {
@@ -15,8 +15,8 @@ internal class NavigationContextMenu(IResourceFactory<Image> imageFactory) : INa
     public event EventHandler? OnLibraryClickedEventHandler;
     public event EventHandler? OnSettingsClickedEventHandler;
 
-    private readonly IResourceFactory<Image> _imageFactory = imageFactory;
-    private readonly ContextMenuStrip? _contextMenu = new ContextMenuStrip();
+    private readonly IResourceFactory<Icon> _iconFactory = iconFactory;
+    private readonly ContextMenuStrip? _contextMenu = new();
 
     public IEnumerable<IMenuItem> Items
     {
@@ -39,19 +39,19 @@ internal class NavigationContextMenu(IResourceFactory<Image> imageFactory) : INa
 
         _contextMenu.Items.Add(
             "Home",
-            _imageFactory.GetResource("Home"),
+            _iconFactory.GetResource("Home")?.ToBitmap(),
             (s, e) => OnHomeClickedEventHandler?.Invoke(this, e)
         );
 
         _contextMenu.Items.Add(
             "Library",
-            _imageFactory.GetResource("Library"),
+            _iconFactory.GetResource("Library")?.ToBitmap(),
             (s, e) => OnLibraryClickedEventHandler?.Invoke(this, e)
         );
 
         _contextMenu.Items.Add(
             "Settings",
-            _imageFactory.GetResource("Settings"),
+            _iconFactory.GetResource("Settings")?.ToBitmap(),
             (s, e) => OnSettingsClickedEventHandler?.Invoke(this, e)
         );
     }

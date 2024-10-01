@@ -4,55 +4,66 @@ using Microsoft.Extensions.Logging;
 
 namespace GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Navigation;
 
-public partial class NavigationViewUC : BaseViewUC, INavigationView
+internal class NavigationViewUC(
+    INavigationContextMenu contextMenu,
+    ILogger<NavigationViewUC> logger
+) : BaseViewUC(logger), INavigationView
 {
-    public NavigationViewUC(INavigationContextMenu contextMenu, ILogger<NavigationViewUC> logger)
-        : base(logger)
-    {
-        InitializeComponent();
+    private readonly INavigationContextMenu _contextMenu = contextMenu;
 
-        _contextMenu = contextMenu;
-    }
-
-    private readonly INavigationContextMenu _contextMenu;
-
-    private FlowLayoutPanel? _buttonPanel;
+    private FlowLayoutPanel? _flowPanel;
 
     public override void InitializeView()
     {
-        SetupControls();
-
+        // Setup Appearance called from base view
         base.InitializeView();
+
+        _contextMenu.InitializeContextMenu();
+
+        SetupControls();
     }
 
     protected override void SetupAppearence()
     {
-        base.SetupAppearence();
-
         // docking the UserControl to the left of the parent form
         this.Dock = DockStyle.Left;
         this.Margin = new Padding(10);
-
-        this.AutoSize = true;
-        this.MinimumSize = new Size(200, 100);
-
+        this.AutoSize = false;
+        this.MinimumSize = new Size(250, 100);
         this.BackColor = Color.LightGray;
     }
 
     private void SetupControls()
     {
-        AddButtonPanel();
+        AddFlowPanel();
 
         GenerateButtonsFromContextMenu();
     }
 
+    private void AddFlowPanel()
+    {
+        // Create and configure a FlowLayoutPanel
+        _flowPanel = new FlowLayoutPanel()
+        {
+            Dock = DockStyle.Fill, // Fill the UserControl
+            FlowDirection = FlowDirection.TopDown, // Stack buttons vertically
+            WrapContents = false, // Prevent wrapping to next column
+            AutoScroll = true, // Enable scroll if needed
+            Padding = new Padding(0), // Remove any padding
+            Margin = new Padding(0), // Remove any margin
+            BackColor = Color.Transparent,
+        };
+
+        this.Controls.Add(_flowPanel);
+    }
+
     private void GenerateButtonsFromContextMenu()
     {
-        if (_contextMenu is null || _buttonPanel is null)
+        if (_contextMenu is null || _flowPanel is null)
             return;
 
         // Clear any existing buttons from the panel
-        _buttonPanel.Controls.Clear();
+        _flowPanel.Controls.Clear();
 
         // Iterate through each ToolStripMenuItem in the ContextMenuStrip
         foreach (var menuItem in _contextMenu.Items)
@@ -60,30 +71,24 @@ public partial class NavigationViewUC : BaseViewUC, INavigationView
             var button = new Button()
             {
                 Text = menuItem.Text,
-                AutoSize = true,
-                TextAlign = ContentAlignment.MiddleLeft,
-                Dock = DockStyle.Top,
-                Margin = new Padding(5),
+                Image = menuItem.Image,
+                AutoSize = false, // Disable AutoSize for the button
+                Width = _flowPanel.ClientSize.Width, // Set width to match panel width
+                Height = 42, // Fixed height for the button
+                TextAlign = ContentAlignment.MiddleCenter,
+                ImageAlign = ContentAlignment.MiddleLeft,
+                Margin = new Padding(0), // Remove margin to prevent gaps
             };
+
+            // Handle the flowPanel resizing event to update button widths dynamically
+            _flowPanel.SizeChanged += (s, e) => button.Width = _flowPanel.ClientSize.Width;
 
             // Set the same Click event as the Context Menu Item
             button.Click += (s, e) => menuItem.PerformClick();
 
             // Add the button to the panel
-            _buttonPanel.Controls.Add(button);
+            _flowPanel.Controls.Add(button);
         }
-    }
-
-    private void AddButtonPanel()
-    {
-        _buttonPanel = new FlowLayoutPanel()
-        {
-            FlowDirection = FlowDirection.TopDown,
-            WrapContents = false,
-            AutoSize = true,
-        };
-
-        this.Controls.Add(_buttonPanel);
     }
 
     protected override void RegisterEventHandlers()

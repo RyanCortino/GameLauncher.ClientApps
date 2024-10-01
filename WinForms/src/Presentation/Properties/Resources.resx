@@ -130,9 +130,6 @@
   <data name="GameLauncher" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\GameLauncher.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="SplashImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SplashImage.png;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Montserrat" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Montserrat.ttf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
@@ -141,5 +138,8 @@
   </data>
   <data name="MontaguSlab" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MontaguSlab.ttf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="SplashImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SplashImage.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

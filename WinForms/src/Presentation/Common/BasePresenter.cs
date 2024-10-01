@@ -2,25 +2,16 @@
 
 namespace GameLauncher.ClientApps.Winforms.Presentation.Common;
 
-public abstract class BasePresenter : IPresenter
+public abstract class BasePresenter(IFormView view, ILogger<BasePresenter> logger) : IPresenter
 {
-    protected BasePresenter(IFormView view, ILogger<BasePresenter> logger)
-    {
-        _logger = logger;
-
-        _view = view;
-
-        Initialize();
-    }
-
     ~BasePresenter()
     {
         UnregisterEventHandlers();
     }
 
-    protected readonly IFormView? _view;
+    protected readonly IFormView? _view = view;
 
-    protected readonly ILogger<BasePresenter> _logger;
+    protected readonly ILogger<BasePresenter> _logger = logger;
 
     public virtual IFormView? View => _view;
 
@@ -28,9 +19,9 @@ public abstract class BasePresenter : IPresenter
 
     protected virtual void OnViewResizedEventHandler(object? sender, EventArgs e) { }
 
-    protected virtual void Initialize()
+    public virtual void InitializePresenter()
     {
-        _logger.LogInformation("Initializing {viewType}.", this.GetType().Name);
+        _logger.LogInformation("Initializing Presenter: {presenterType}.", this.GetType().Name);
 
         RegisterEventHandlers();
     }

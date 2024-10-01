@@ -5,4 +5,6 @@ namespace GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Present
 public interface IPresenter
 {
     IFormView? View { get; }
+
+    void InitializePresenter();
 }

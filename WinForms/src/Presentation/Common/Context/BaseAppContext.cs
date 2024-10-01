@@ -15,6 +15,8 @@ internal class BaseAppContext : ApplicationContext
         _taskbarContextMenu.InitializeContextMenu();
 
         _presenter = presenter;
+        _presenter.InitializePresenter();
+
         _logger = logger;
 
         Initialize();
@@ -33,7 +35,7 @@ internal class BaseAppContext : ApplicationContext
 
     protected virtual void Initialize()
     {
-        _logger.LogInformation("Initializing {this}.", this.GetType().Name);
+        _logger.LogInformation("Initializing AppContext: {appContextType}.", this.GetType().Name);
 
         RegisterEventHandlers();
     }

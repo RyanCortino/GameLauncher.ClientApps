@@ -1,6 +1,6 @@
 ﻿namespace GameLauncher.ClientApps.Winforms.Infrastructure.Factories;
 
-internal class IconResourceFactory : ResourceFactory<Icon>, IResourceFactory<Icon>
+internal class IconResourceFactory : ResourceFactory<Icon>
 {
     public IconResourceFactory()
         : base(IconLoader) { }

@@ -19,5 +19,6 @@
     <PackageVersion Include="Serilog.Extensions.Hosting" Version="8.0.0" />
     <PackageVersion Include="Serilog.Settings.Configuration" Version="8.0.2" />
     <PackageVersion Include="Serilog.Sinks.Debug" Version="3.0.0" />
+    <PackageVersion Include="System.Drawing.Common" Version="8.0.8" />
   </ItemGroup>
 </Project>

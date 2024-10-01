@@ -1,6 +1,6 @@
 ﻿namespace GameLauncher.ClientApps.Winforms.Infrastructure.Factories;
 
-internal class ImageResourceFactory : ResourceFactory<Image>, IResourceFactory<Image>
+internal class ImageResourceFactory : ResourceFactory<Image>
 {
     public ImageResourceFactory()
         : base(ImageLoader) { }

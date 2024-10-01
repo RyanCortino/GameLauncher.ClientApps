@@ -18,6 +18,12 @@ internal class MenuItemWrapper(ToolStripItem item) : IMenuItem
         set => _item.Enabled = value;
     }
 
+    public Image? Image
+    {
+        get => _item.Image;
+        set => _item.Image = value;
+    }
+
     public void PerformClick()
     {
         if (_item is ToolStripMenuItem menuItem)

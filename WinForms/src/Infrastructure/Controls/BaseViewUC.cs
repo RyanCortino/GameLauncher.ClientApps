@@ -3,21 +3,14 @@ using Microsoft.Extensions.Logging;
 
 namespace GameLauncher.ClientApps.Winforms.Infrastructure.Controls;
 
-public partial class BaseViewUC : UserControl, IUserControlView
+internal class BaseViewUC(ILogger<BaseViewUC> logger) : UserControl, IUserControlView
 {
-    public BaseViewUC(ILogger<BaseViewUC> logger)
-    {
-        InitializeComponent();
-
-        _logger = logger;
-    }
-
     ~BaseViewUC()
     {
         UnregisterEventHandlers();
     }
 
-    protected readonly ILogger _logger;
+    protected readonly ILogger _logger = logger;
 
     public virtual void InitializeView()
     {

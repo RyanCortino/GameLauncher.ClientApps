@@ -27,7 +27,7 @@
 	  <None Remove="Resources\Montserrat-Italic.ttf" />
 	  <None Remove="Resources\Montserrat.ttf" />
 	  <None Remove="Resources\Settings.ico" />
-	  <None Remove="Resources\SplashImage.png" />
+	  <None Remove="Resources\SplashImage.ico" />
 	</ItemGroup>
 
   <ItemGroup>
@@ -51,16 +51,28 @@
 
 	
   <ItemGroup>
-    <EmbeddedResource Include="Resources\GameLauncher.ico" />
-    <EmbeddedResource Include="Resources\Home.ico" />
-    <EmbeddedResource Include="Resources\Library.ico" />
-    <EmbeddedResource Include="Resources\MontaguSlab.ttf" />
-    <EmbeddedResource Include="Resources\Montserrat-Italic.ttf" />
-    <EmbeddedResource Include="Resources\Montserrat.ttf" />
-    <EmbeddedResource Include="Resources\Settings.ico" />
-    <EmbeddedResource Include="Resources\SplashImage.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <EmbeddedResource Include="Resources\GameLauncher.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Home.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Library.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\MontaguSlab.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Montserrat-Italic.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Montserrat.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Settings.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\SplashImage.ico" />
   </ItemGroup>
 
 	

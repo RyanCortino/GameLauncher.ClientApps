@@ -91,12 +91,57 @@ namespace GameLauncher.ClientApps.Winforms.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to @GDEF`·�Gl�GPOSG?o$^\��GSUB����HVAR�B��(XEOS/2�/`STAT��m�avarU.`�8cmap�L0 �fvar���p�gaspTglyfoi��B0Z@gvar�9���pM�head��X�6hhea	%|$hmtxH�G,�
+        ///tloca޷4q�Dmaxp��\ name����&amp;postx�3��preph��L��������������������h$r_&lt;���U��TB}�����b��ʫȉ�U��ݧ����U�@@�� [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string MontaguSlab {
+            get {
+                return ResourceManager.GetString("MontaguSlab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to @GDEFo
+        ///��GPOS�^��|�&quot;GSUBS�Zm\l*HVAR-|�&amp;,�OS/2u�^-`STAT������avar����2cmapy�Ҡ4
+        ///�fvar��y�l~gaspTglyfc�Vqۤ3�gvar\����head���6hhea		�|$hmtx&gt;�Jv&gt;��locaY �maxp��\ name�Q��postn����xU*preph��L�������uYY	���V���u
+        ///��
+        ///	R� �( �0*A84�@@#��g_&lt;����Fݜp��V���� [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Montserrat {
+            get {
+                return ResourceManager.GetString("Montserrat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to @GDEFƗ�	fGPOSJ$��~GSUBc��aT*�HVARA뤲/�BOS/2u�^)`STAT���j��avar����2cmap���E�
+        ///�fvar��y�l~gaspTglyf�::y�; gvarG+&lt;&amp;Rhead�Z��6hhea	�        ///i|$hmtx��B�ploca��A� d:maxp��\ name)�O��vpost����PWKpreph��L��������XW	���&quot;��	���
+        ///��
+        ///	R� �( �0*A84�@@Fz�_&lt;����5ݜp��&quot;��	� [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Montserrat_Italic {
+            get {
+                return ResourceManager.GetString("Montserrat-Italic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon Settings {
             get {
                 object obj = ResourceManager.GetObject("Settings", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] SplashImage {
+            get {
+                object obj = ResourceManager.GetObject("SplashImage", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }

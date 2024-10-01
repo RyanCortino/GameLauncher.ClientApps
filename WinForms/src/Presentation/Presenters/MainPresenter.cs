@@ -16,9 +16,9 @@ internal class MainPresenter(
 
     public override IMainView? View => _view as IMainView;
 
-    protected override void Initialize()
+    public override void InitializePresenter()
     {
-        base.Initialize();
+        base.InitializePresenter();
 
         View?.InitializeView();
     }
@@ -50,8 +50,6 @@ internal class MainPresenter(
 
     protected override void OnViewShownEventHandler(object? sender, EventArgs e)
     {
-        // Check Security Options
-
-        // Check Bearer Token
+        base.OnViewShownEventHandler(sender, e);
     }
 }

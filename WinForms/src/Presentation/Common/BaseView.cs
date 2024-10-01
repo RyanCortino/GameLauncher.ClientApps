@@ -23,6 +23,8 @@ public class BaseView : Form, IFormView
 
     public virtual void InitializeView()
     {
+        _logger.LogInformation("Initializing View: {viewType}", this.GetType().Name);
+
         SetSize();
         SetupAppearence();
     }
@@ -55,7 +57,7 @@ public class BaseView : Form, IFormView
     // Virtual method to handle Form Load event
     protected virtual void View_Load(object? sender, EventArgs e)
     {
-        _logger.LogInformation("Loaded {viewType}.", this.GetType().Name);
+        _logger.LogInformation("Loaded View: {viewType}.", this.GetType().Name);
     }
 
     // Virtual method to handle Form Shown event
@@ -93,6 +95,7 @@ public class BaseView : Form, IFormView
         }
 
         // Calculate splash screen size as a proportion of screen dimensions
+
         int screenWidth = Screen.PrimaryScreen.Bounds.Width;
         int screenHeight = Screen.PrimaryScreen.Bounds.Height;
 
