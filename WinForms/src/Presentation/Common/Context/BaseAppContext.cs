@@ -43,17 +43,17 @@ internal class BaseAppContext : ApplicationContext
     protected virtual void RegisterEventHandlers()
     {
         // Handle double-click event on the notify icon to open the main form
-        _taskbarContextMenu.OnNotifyIconDoubleClickedEventHandler += (s, e) => ShowMainForm();
+        _taskbarContextMenu.NotifyIconDoubleClicked += OnNotifyIconDoubleClicked;
 
-        _taskbarContextMenu.OnExitClickedEventHandler += (s, e) => ExitApplication();
+        _taskbarContextMenu.ExitClicked += OnExitClicked;
     }
 
     protected virtual void UnregisterEventHandlers()
     {
         // Handle double-click event on the notify icon to open the main form
-        _taskbarContextMenu.OnNotifyIconDoubleClickedEventHandler -= (s, e) => ShowMainForm();
+        _taskbarContextMenu.NotifyIconDoubleClicked -= OnNotifyIconDoubleClicked;
 
-        _taskbarContextMenu.OnExitClickedEventHandler -= (s, e) => ExitApplication();
+        _taskbarContextMenu.ExitClicked -= OnExitClicked;
     }
 
     protected virtual void ShowMainForm()
@@ -63,11 +63,29 @@ internal class BaseAppContext : ApplicationContext
 
         MainForm.Show();
 
+        BringMainFormToFront();
+    }
+
+    private void BringMainFormToFront()
+    {
+        if (MainForm is null)
+            return;
+
         if (MainForm.WindowState == FormWindowState.Minimized)
             MainForm.WindowState = FormWindowState.Normal;
 
         MainForm.BringToFront();
         MainForm.Activate();
+    }
+
+    private void OnExitClicked(object? sender, EventArgs e)
+    {
+        ExitApplication();
+    }
+
+    private void OnNotifyIconDoubleClicked(Object? sender, EventArgs e)
+    {
+        ShowMainForm();
     }
 
     private void ExitApplication()

@@ -28,6 +28,7 @@
 	  <None Remove="Resources\Montserrat.ttf" />
 	  <None Remove="Resources\Settings.ico" />
 	  <None Remove="Resources\SplashImage.ico" />
+	  <None Remove="Resources\SplashImage.png" />
 	</ItemGroup>
 
   <ItemGroup>
@@ -73,6 +74,7 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\SplashImage.ico" />
+    <EmbeddedResource Include="Resources\SplashImage.png" />
   </ItemGroup>
 
 	

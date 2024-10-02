@@ -1,10 +1,9 @@
-﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Factories;
-using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Menus;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Menus;
 using GameLauncher.ClientApps.Winforms.Presentation.Common.Utils;
 
 namespace GameLauncher.ClientApps.Winforms.Presentation.Common.Context.Menus;
 
-internal class TaskbarContextMenu(IResourceFactory<Icon> iconFactory) : ITaskbarContextMenu
+internal class TaskbarContextMenu() : ITaskbarContextMenu
 {
     ~TaskbarContextMenu()
     {
@@ -12,8 +11,8 @@ internal class TaskbarContextMenu(IResourceFactory<Icon> iconFactory) : ITaskbar
         _notifyIcon?.Dispose();
     }
 
-    public event EventHandler? OnNotifyIconDoubleClickedEventHandler;
-    public event EventHandler? OnExitClickedEventHandler;
+    public event EventHandler? NotifyIconDoubleClicked;
+    public event EventHandler? ExitClicked;
 
     private NotifyIcon? _notifyIcon;
 
@@ -21,7 +20,7 @@ internal class TaskbarContextMenu(IResourceFactory<Icon> iconFactory) : ITaskbar
     {
         get
         {
-            if (_notifyIcon.ContextMenuStrip is null)
+            if (_notifyIcon?.ContextMenuStrip is null)
                 yield break;
 
             foreach (ToolStripItem item in _notifyIcon.ContextMenuStrip.Items)
@@ -36,8 +35,7 @@ internal class TaskbarContextMenu(IResourceFactory<Icon> iconFactory) : ITaskbar
         _notifyIcon = MakeNotifyIcon(BuildContextMenu());
 
         // Handle double-click event on the notify icon to open the main form
-        _notifyIcon.DoubleClick += (s, e) =>
-            OnNotifyIconDoubleClickedEventHandler?.Invoke(this, EventArgs.Empty);
+        _notifyIcon.DoubleClick += (s, e) => NotifyIconDoubleClicked?.Invoke(this, EventArgs.Empty);
     }
 
     public void ShowBalloonTip(int timeout, string tipTitle, string tipText, int toolTipIconIndex)
@@ -50,7 +48,7 @@ internal class TaskbarContextMenu(IResourceFactory<Icon> iconFactory) : ITaskbar
         // Create and initialize the context menu
         var contextMenu = new ContextMenuStrip();
 
-        contextMenu.Items.Add("Exit", null, (s, e) => OnExitClickedEventHandler?.Invoke(this, e));
+        contextMenu.Items.Add("Exit", null, (s, e) => ExitClicked?.Invoke(this, e));
 
         return contextMenu;
     }

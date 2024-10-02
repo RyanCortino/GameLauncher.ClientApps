@@ -11,9 +11,9 @@ internal class NavigationContextMenu(IResourceFactory<Icon> iconFactory) : INavi
         _contextMenu?.Dispose();
     }
 
-    public event EventHandler? OnHomeClickedEventHandler;
-    public event EventHandler? OnLibraryClickedEventHandler;
-    public event EventHandler? OnSettingsClickedEventHandler;
+    public event EventHandler? HomeClicked;
+    public event EventHandler? LibraryClicked;
+    public event EventHandler? SettingsClicked;
 
     private readonly IResourceFactory<Icon> _iconFactory = iconFactory;
     private readonly ContextMenuStrip? _contextMenu = new();
@@ -40,19 +40,19 @@ internal class NavigationContextMenu(IResourceFactory<Icon> iconFactory) : INavi
         _contextMenu.Items.Add(
             "Home",
             _iconFactory.GetResource("Home")?.ToBitmap(),
-            (s, e) => OnHomeClickedEventHandler?.Invoke(this, e)
+            (s, e) => HomeClicked?.Invoke(this, e)
         );
 
         _contextMenu.Items.Add(
             "Library",
             _iconFactory.GetResource("Library")?.ToBitmap(),
-            (s, e) => OnLibraryClickedEventHandler?.Invoke(this, e)
+            (s, e) => LibraryClicked?.Invoke(this, e)
         );
 
         _contextMenu.Items.Add(
             "Settings",
             _iconFactory.GetResource("Settings")?.ToBitmap(),
-            (s, e) => OnSettingsClickedEventHandler?.Invoke(this, e)
+            (s, e) => SettingsClicked?.Invoke(this, e)
         );
     }
 }

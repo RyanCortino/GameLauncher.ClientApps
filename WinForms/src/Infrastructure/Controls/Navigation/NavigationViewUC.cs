@@ -4,23 +4,18 @@ using Microsoft.Extensions.Logging;
 
 namespace GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Navigation;
 
-internal class NavigationViewUC(
-    INavigationContextMenu contextMenu,
-    ILogger<NavigationViewUC> logger
-) : BaseViewUC(logger), INavigationView
+internal class NavigationViewUC(ILogger<NavigationViewUC> logger)
+    : BaseViewUC(logger),
+        INavigationView
 {
-    private readonly INavigationContextMenu _contextMenu = contextMenu;
-
-    private FlowLayoutPanel? _flowPanel;
+    private FlowLayoutPanel? _headerPanel;
+    private FlowLayoutPanel? _bodyPanel;
+    private FlowLayoutPanel? _footerPanel;
 
     public override void InitializeView()
     {
         // Setup Appearance called from base view
         base.InitializeView();
-
-        _contextMenu.InitializeContextMenu();
-
-        SetupControls();
     }
 
     protected override void SetupAppearence()
@@ -29,21 +24,32 @@ internal class NavigationViewUC(
         this.Dock = DockStyle.Left;
         this.Margin = new Padding(10);
         this.AutoSize = false;
-        this.MinimumSize = new Size(250, 100);
+        this.MinimumSize = new Size(250, 400);
         this.BackColor = Color.LightGray;
+
+        AddFlowPanels();
+
+        AddHeader();
+
+        AddFooter();
     }
 
-    private void SetupControls()
-    {
-        AddFlowPanel();
+    private void AddHeader() { }
 
-        GenerateButtonsFromContextMenu();
-    }
+    private void AddFooter() { }
 
-    private void AddFlowPanel()
+    private void AddFlowPanels()
     {
-        // Create and configure a FlowLayoutPanel
-        _flowPanel = new FlowLayoutPanel()
+        _headerPanel = new FlowLayoutPanel()
+        {
+            Dock = DockStyle.Top,
+            FlowDirection = FlowDirection.LeftToRight,
+            Height = 60,
+            WrapContents = false,
+            BackColor = Color.Transparent,
+        };
+
+        _bodyPanel = new FlowLayoutPanel()
         {
             Dock = DockStyle.Fill, // Fill the UserControl
             FlowDirection = FlowDirection.TopDown, // Stack buttons vertically
@@ -54,52 +60,52 @@ internal class NavigationViewUC(
             BackColor = Color.Transparent,
         };
 
-        this.Controls.Add(_flowPanel);
+        _footerPanel = new FlowLayoutPanel()
+        {
+            Dock = DockStyle.Bottom,
+            FlowDirection = FlowDirection.LeftToRight,
+            Height = 30,
+            WrapContents = false,
+            BackColor = Color.Transparent,
+        };
+
+        // Control order affects the docking behavior. The body panel should be
+        // added first to avoid issues with fill size.
+        this.Controls.Add(_bodyPanel);
+        this.Controls.Add(_headerPanel);
+        this.Controls.Add(_footerPanel);
     }
 
-    private void GenerateButtonsFromContextMenu()
+    public void ClearAllButtons()
     {
-        if (_contextMenu is null || _flowPanel is null)
+        // Clear any existing buttons from the panel
+        _bodyPanel?.Controls.Clear();
+    }
+
+    public void AddButtonFrom(IMenuItem menuItem)
+    {
+        if (_bodyPanel is null)
             return;
 
-        // Clear any existing buttons from the panel
-        _flowPanel.Controls.Clear();
-
-        // Iterate through each ToolStripMenuItem in the ContextMenuStrip
-        foreach (var menuItem in _contextMenu.Items)
+        var button = new Button()
         {
-            var button = new Button()
-            {
-                Text = menuItem.Text,
-                Image = menuItem.Image,
-                AutoSize = false, // Disable AutoSize for the button
-                Width = _flowPanel.ClientSize.Width, // Set width to match panel width
-                Height = 42, // Fixed height for the button
-                TextAlign = ContentAlignment.MiddleCenter,
-                ImageAlign = ContentAlignment.MiddleLeft,
-                Margin = new Padding(0), // Remove margin to prevent gaps
-            };
+            Text = menuItem.Text,
+            Image = menuItem.Image,
+            AutoSize = false, // Disable AutoSize for the button
+            Width = _bodyPanel.ClientSize.Width, // Set width to match panel width
+            Height = 42, // Fixed height for the button
+            TextAlign = ContentAlignment.MiddleCenter,
+            ImageAlign = ContentAlignment.MiddleLeft,
+            Margin = new Padding(0), // Remove margin to prevent gaps
+        };
 
-            // Handle the flowPanel resizing event to update button widths dynamically
-            _flowPanel.SizeChanged += (s, e) => button.Width = _flowPanel.ClientSize.Width;
+        // Handle the flowPanel resizing event to update button widths dynamically
+        _bodyPanel.SizeChanged += (s, e) => button.Width = _bodyPanel.ClientSize.Width;
 
-            // Set the same Click event as the Context Menu Item
-            button.Click += (s, e) => menuItem.PerformClick();
+        // Set the same Click event as the Context Menu Item
+        button.Click += (s, e) => menuItem.PerformClick();
 
-            // Add the button to the panel
-            _flowPanel.Controls.Add(button);
-        }
-    }
-
-    protected override void RegisterEventHandlers()
-    {
-        _contextMenu.OnHomeClickedEventHandler += OnHomeClicked;
-    }
-
-    protected override void UnregisterEventHandlers() { }
-
-    public void OnHomeClicked(object? sender, EventArgs e)
-    {
-        _logger.LogInformation("Navigation link for Home was clicked.");
+        // Add the button to the panel
+        _bodyPanel.Controls.Add(button);
     }
 }

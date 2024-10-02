@@ -1,7 +1,7 @@
 ﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.SplashScreen;
 using GameLauncher.ClientApps.Winforms.Presentation.Common.Utils;
 
-namespace GameLauncher.ClientApps.Winforms.Presentation.Forms;
+namespace GameLauncher.ClientApps.Winforms.Presentation.Views;
 
 internal class SplashView(ILogger<SplashView> logger) : BaseView(logger), ISplashView
 {
@@ -17,9 +17,9 @@ internal class SplashView(ILogger<SplashView> logger) : BaseView(logger), ISplas
             if (_assemblyVersionLabel is null)
                 return;
 
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
-                this.Invoke(() => _assemblyVersionLabel.Text = value);
+                Invoke(() => _assemblyVersionLabel.Text = value);
                 return;
             }
 
@@ -32,9 +32,9 @@ internal class SplashView(ILogger<SplashView> logger) : BaseView(logger), ISplas
         if (_reportProgressLabel is null)
             return;
 
-        if (this.InvokeRequired)
+        if (InvokeRequired)
         {
-            this.Invoke(() => _reportProgressLabel.Text = value);
+            Invoke(() => _reportProgressLabel.Text = value);
             return;
         }
 
@@ -46,18 +46,20 @@ internal class SplashView(ILogger<SplashView> logger) : BaseView(logger), ISplas
         base.SetupAppearence();
 
         // Set the basic properties of the splash screen form
-        this.Text = "Splash Screen";
-        this.FormBorderStyle = FormBorderStyle.None; // No borders for a clean look
-        this.StartPosition = FormStartPosition.CenterScreen; // Center the splash screen
-        this.TopMost = true; // Ensure the splash screen is always on top
-        this.ShowInTaskbar = false; // Prevent showing in the taskbar
-        this.Opacity = 0.95; // Optional: Set slight transparency
-        this.ControlBox = false; // Disable close button
-        this.MaximizeBox = false; // Disable maximize box
-        this.MinimizeBox = false; // Disable minimize box
+        Text = "Splash Screen";
+        FormBorderStyle = FormBorderStyle.None; // No borders for a clean look
+        StartPosition = FormStartPosition.CenterScreen; // Center the splash screen
+        TopMost = true; // Ensure the splash screen is always on top
+        ShowInTaskbar = false; // Prevent showing in the taskbar
+        Opacity = 0.95; // Optional: Set slight transparency
+        ControlBox = false; // Disable close button
+        MaximizeBox = false; // Disable maximize box
+        MinimizeBox = false; // Disable minimize box
 
-        this.BackgroundImage = Image.FromStream(new MemoryStream(Properties.Resources.SplashImage));
-        this.BackgroundImageLayout = ImageLayout.Zoom; // Adjust the layout of the background image
+        Size = new Size(16, 9) * 42;
+
+        BackgroundImage = Image.FromStream(new MemoryStream(Properties.Resources.SplashImage));
+        BackgroundImageLayout = ImageLayout.Zoom; // Adjust the layout of the background image
 
         AddProgressBar();
 
@@ -73,7 +75,7 @@ internal class SplashView(ILogger<SplashView> logger) : BaseView(logger), ISplas
         {
             AutoSize = true,
             Text = $"Version {CoreAssembly.Version}", // Set version dynamically
-            Font = new Font("Segoe UI", this.ClientSize.Width / 80, FontStyle.Bold), // Set font style and Dynamic Font Resizing Based on Screen Resolution
+            Font = new Font("Segoe UI", ClientSize.Width / 80, FontStyle.Bold), // Set font style and Dynamic Font Resizing Based on Screen Resolution
             ForeColor = Color.FromArgb(50, 50, 50), // Set font color for good contrast
             BackColor = Color.Transparent, // Make the label background transparent
             TextAlign = ContentAlignment.MiddleRight, // Align text to the right
@@ -85,19 +87,19 @@ internal class SplashView(ILogger<SplashView> logger) : BaseView(logger), ISplas
 
         // Position the label at the bottom-right corner with padding
         _assemblyVersionLabel.Location = new Point(
-            this.ClientSize.Width - _assemblyVersionLabel.Width - 20,
-            this.ClientSize.Height - _assemblyVersionLabel.Height - 20
+            ClientSize.Width - _assemblyVersionLabel.Width - 20,
+            ClientSize.Height - _assemblyVersionLabel.Height - 20
         );
 
         // Adjust location dynamically if AutoSize changes label size
         _assemblyVersionLabel.LocationChanged += (sender, e) =>
             _assemblyVersionLabel.Location = new Point(
-                this.ClientSize.Width - _assemblyVersionLabel.Width - 20,
-                this.ClientSize.Height - _assemblyVersionLabel.Height - 20
+                ClientSize.Width - _assemblyVersionLabel.Width - 20,
+                ClientSize.Height - _assemblyVersionLabel.Height - 20
             );
 
         // Add the label to the splash screen form controls
-        this.Controls.Add(_assemblyVersionLabel);
+        Controls.Add(_assemblyVersionLabel);
     }
 
     private void AddReportProgressLabel()
@@ -107,7 +109,7 @@ internal class SplashView(ILogger<SplashView> logger) : BaseView(logger), ISplas
         {
             AutoSize = true,
             Text = $"Preloading assets..", // Set version dynamically
-            Font = new Font("Segoe UI", this.ClientSize.Width / 100, FontStyle.Regular), // Set font style and Dynamic Font Resizing Based on Screen Resolution
+            Font = new Font("Segoe UI", ClientSize.Width / 100, FontStyle.Regular), // Set font style and Dynamic Font Resizing Based on Screen Resolution
             ForeColor = Color.FromArgb(50, 50, 50), // Set font color for good contrast
             BackColor = Color.Transparent, // Make the label background transparent
             TextAlign = ContentAlignment.MiddleLeft, // Align text to the right
@@ -120,18 +122,18 @@ internal class SplashView(ILogger<SplashView> logger) : BaseView(logger), ISplas
         // Position the label at the bottom-letft corner with padding
         _reportProgressLabel.Location = new Point(
             20,
-            this.ClientSize.Height - _reportProgressLabel.Height - 20
+            ClientSize.Height - _reportProgressLabel.Height - 20
         );
 
         // Adjust location dynamically if AutoSize changes label size
         _reportProgressLabel.LocationChanged += (sender, e) =>
             _reportProgressLabel.Location = new Point(
                 20,
-                this.ClientSize.Height - _reportProgressLabel.Height - 20
+                ClientSize.Height - _reportProgressLabel.Height - 20
             );
 
         // Add the label to the splash screen form controls
-        this.Controls.Add(_reportProgressLabel);
+        Controls.Add(_reportProgressLabel);
     }
 
     private void AddProgressBar()
@@ -144,6 +146,6 @@ internal class SplashView(ILogger<SplashView> logger) : BaseView(logger), ISplas
             Height = 10,
         };
 
-        this.Controls.Add(progressBar);
+        Controls.Add(progressBar);
     }
 }

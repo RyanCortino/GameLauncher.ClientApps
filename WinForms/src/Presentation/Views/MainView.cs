@@ -1,21 +1,30 @@
-﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.MainMdiForm;
-using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.UserControls.Navigation;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Factories;
+using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.MainMdiForm;
+using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.UserControls;
 
 namespace GameLauncher.ClientApps.Winforms.Presentation.Views;
 
-internal class MainView(INavigationView navigationViewUC, ILogger<MainView> logger)
+internal class MainView(IResourceFactory<Icon> iconFactory, ILogger<MainView> logger)
     : BaseView(logger),
         IMainView
 {
-    private readonly INavigationView _navigationViewUC = navigationViewUC;
+    private readonly IResourceFactory<Icon> _iconFactory = iconFactory;
 
-    public override void InitializeView()
+    public void AddControl(IUserControlView? userControl)
     {
-        base.InitializeView();
+        if (userControl is null)
+            return;
 
-        this.Controls.Add(_navigationViewUC as UserControl);
+        this.Controls.Add(userControl as UserControl);
+    }
 
-        _navigationViewUC.InitializeView();
+    protected override void SetupAppearence()
+    {
+        base.SetupAppearence();
+
+        this.Icon = _iconFactory.GetResource("GameLauncher");
+        this.Size = new Size(1280, 720);
+        this.MinimumSize = new Size(640, 360);
     }
 
     public void CloseAll()

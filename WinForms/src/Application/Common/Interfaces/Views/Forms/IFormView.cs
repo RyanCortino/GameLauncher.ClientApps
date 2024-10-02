@@ -2,8 +2,9 @@
 {
     public interface IFormView : IView
     {
-        event EventHandler? OnViewShown;
-        event EventHandler? OnViewResized;
+        event EventHandler? ViewShown;
+        event EventHandler? ViewResized;
+        event EventHandler? ViewLoaded;
 
         void CloseView();
     }

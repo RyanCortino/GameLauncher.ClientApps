@@ -16,8 +16,9 @@ public class BaseView : Form, IFormView
         DeregisterEventHandlers();
     }
 
-    public event EventHandler? OnViewShown;
-    public event EventHandler? OnViewResized;
+    public event EventHandler? ViewShown;
+    public event EventHandler? ViewResized;
+    public event EventHandler? ViewLoaded;
 
     protected readonly ILogger _logger;
 
@@ -42,33 +43,53 @@ public class BaseView : Form, IFormView
 
     private void RegisterEventHandlers()
     {
-        this.Load += View_Load;
-        this.Shown += View_Shown;
-        this.Resize += View_Resized;
+        this.Load += OnViewLoad;
+        this.Shown += OnViewShown;
+        this.Resize += OnViewResize;
+        this.FormClosing -= OnFormClosing;
     }
 
     private void DeregisterEventHandlers()
     {
-        this.Load -= View_Load;
-        this.Shown -= View_Shown;
-        this.Resize -= View_Resized;
+        this.Load -= OnViewLoad;
+        this.Shown -= OnViewShown;
+        this.Resize -= OnViewResize;
+        this.FormClosing -= OnFormClosing;
+    }
+
+    protected virtual void OnFormClosing(object? sender, EventArgs e)
+    {
+        try
+        {
+            DialogResult result = MessageBox.Show(
+                "Are you sure you want to exit?",
+                "Exit Application",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Exception caught: {ex.Message}");
+        }
     }
 
     // Virtual method to handle Form Load event
-    protected virtual void View_Load(object? sender, EventArgs e)
+    protected virtual void OnViewLoad(object? sender, EventArgs e)
     {
         _logger.LogInformation("Loaded View: {viewType}.", this.GetType().Name);
+        ViewLoaded?.Invoke(this, e);
     }
 
     // Virtual method to handle Form Shown event
-    protected virtual void View_Shown(object? sender, EventArgs e)
+    protected virtual void OnViewShown(object? sender, EventArgs e)
     {
-        OnViewShown?.Invoke(this, e);
+        ViewShown?.Invoke(this, e);
     }
 
-    protected virtual void View_Resized(object? sender, EventArgs e)
+    protected virtual void OnViewResize(object? sender, EventArgs e)
     {
-        OnViewResized?.Invoke(this, e);
+        ViewResized?.Invoke(this, e);
     }
 
     protected virtual void SetupAppearence()

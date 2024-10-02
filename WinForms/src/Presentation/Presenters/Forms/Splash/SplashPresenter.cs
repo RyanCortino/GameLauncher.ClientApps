@@ -2,7 +2,7 @@
 using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.SplashScreen;
 using GameLauncher.ClientApps.Winforms.Presentation.Common.Utils;
 
-namespace GameLauncher.ClientApps.Winforms.Presentation.Presenters;
+namespace GameLauncher.ClientApps.Winforms.Presentation.Presenters.Forms.Splash;
 
 internal class SplashPresenter(
     ISplashView splashView,
@@ -11,7 +11,7 @@ internal class SplashPresenter(
     IResourceFactory<Icon> iconFactory,
     IFontFactory fontFactory,
     ILogger<SplashPresenter> logger
-) : BasePresenter(splashView, logger), ISplashPresenter
+) : FormPresenter(splashView, logger), ISplashPresenter
 {
     private readonly ApplicationOptions _applicationOptions = applicationOptions.Value;
 
@@ -19,18 +19,18 @@ internal class SplashPresenter(
     private readonly IResourceFactory<Image> _imageFactory = imageFactory;
     private readonly IResourceFactory<Icon> _iconFactory = iconFactory;
 
-    public event EventHandler? OnPreloadCompleted;
+    public event EventHandler? PreloadCompleted;
 
     public override ISplashView? View => _view as ISplashView;
 
-    protected override async void OnViewShownEventHandler(object? sender, EventArgs e)
+    protected override async void OnViewShown(object? sender, EventArgs e)
     {
-        base.OnViewShownEventHandler(sender, e);
+        base.OnViewShown(sender, e);
 
         await Task.Run(() => PreloadAsync(sender, e));
     }
 
-    private async void OnPreloadCompletedEventHandler(object? sender, EventArgs e) =>
+    private async void OnPreloadCompleted(object? sender, EventArgs e) =>
         await Task.Run(() => PreloadCompletedAsync(sender, e));
 
     private static async Task Delay(int millisecondsDelay)
@@ -68,7 +68,7 @@ internal class SplashPresenter(
             Task.WaitAll(loadingTasks);
         });
 
-        OnPreloadCompleted?.Invoke(this, e);
+        PreloadCompleted?.Invoke(this, e);
     }
 
     private Task DelayWithProgressUpdate(int delay, string? progressMessage = null)
@@ -156,14 +156,14 @@ internal class SplashPresenter(
     {
         base.RegisterEventHandlers();
 
-        OnPreloadCompleted += OnPreloadCompletedEventHandler;
+        PreloadCompleted += OnPreloadCompleted;
     }
 
     protected override void UnregisterEventHandlers()
     {
         base.UnregisterEventHandlers();
 
-        OnPreloadCompleted -= OnPreloadCompletedEventHandler;
+        PreloadCompleted -= OnPreloadCompleted;
     }
 
     private void UpdateProgress(string message)

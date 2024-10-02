@@ -1,4 +1,6 @@
-﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.UserControls.Navigation;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.UserControls.Content;
+using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.UserControls.Navigation;
+using GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Content;
 using GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Navigation;
 using GameLauncher.ClientApps.Winforms.Infrastructure.Factories;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +21,9 @@ public static class DependencyInjection
 
         // User Controls
         services.AddTransient<INavigationView, NavigationViewUC>();
+        services.AddTransient<IHomeView, HomeViewUC>();
+        services.AddTransient<ILibraryView, LibraryViewUC>();
+        services.AddTransient<ISettingsView, SettingsViewUC>();
 
         return services;
     }
