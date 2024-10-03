@@ -1,8 +1,4 @@
-﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Menus;
-using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.UserControls.Navigation;
-using Microsoft.Extensions.Logging;
-
-namespace GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Navigation;
+﻿namespace GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Navigation;
 
 internal class NavigationViewUC(
     IResourceFactory<Font> fontFactory,

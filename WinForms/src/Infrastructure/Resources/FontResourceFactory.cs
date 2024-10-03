@@ -1,6 +1,7 @@
 using System.Drawing.Text;
 using System.Runtime.InteropServices;
-using GameLauncher.ClientApps.Winforms.Infrastructure.Factories;
+
+namespace GameLauncher.ClientApps.Winforms.Infrastructure.Resources;
 
 /// <summary>
 /// A specialized factory class for managing and caching font resources using a PrivateFontCollection.

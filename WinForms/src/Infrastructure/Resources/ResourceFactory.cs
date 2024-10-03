@@ -1,4 +1,4 @@
-﻿namespace GameLauncher.ClientApps.Winforms.Infrastructure.Factories;
+﻿namespace GameLauncher.ClientApps.Winforms.Infrastructure.Resources;
 
 /// <summary>
 /// A generic factory class for managing and caching resources.

@@ -1,4 +1,4 @@
-﻿namespace GameLauncher.ClientApps.Winforms.Infrastructure.Factories;
+﻿namespace GameLauncher.ClientApps.Winforms.Infrastructure.Resources;
 
 internal class ImageResourceFactory : ResourceFactory<Image>
 {
