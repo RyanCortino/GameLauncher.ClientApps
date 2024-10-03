@@ -4,10 +4,15 @@ using Microsoft.Extensions.Logging;
 
 namespace GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Navigation;
 
-internal class NavigationViewUC(ILogger<NavigationViewUC> logger)
-    : BaseViewUC(logger),
-        INavigationView
+internal class NavigationViewUC(
+    IResourceFactory<Font> fontFactory,
+    IResourceFactory<Icon> iconFactory,
+    ILogger<NavigationViewUC> logger
+) : BaseViewUC(logger), INavigationView
 {
+    private readonly IResourceFactory<Icon> _iconFactory = iconFactory;
+    private readonly IResourceFactory<Font> _fontFactory = fontFactory;
+
     private FlowLayoutPanel? _headerPanel;
     private FlowLayoutPanel? _bodyPanel;
     private FlowLayoutPanel? _footerPanel;
@@ -34,7 +39,29 @@ internal class NavigationViewUC(ILogger<NavigationViewUC> logger)
         AddFooter();
     }
 
-    private void AddHeader() { }
+    private void AddHeader()
+    {
+        PictureBox logoImage =
+            new()
+            {
+                SizeMode = PictureBoxSizeMode.Zoom,
+                Image = _iconFactory.GetResource("GameLauncher")?.ToBitmap(),
+            };
+
+        Label titleLabel =
+            new()
+            {
+                Text = "Game\nLauncher",
+                UseCompatibleTextRendering = true,
+                Font = _fontFactory.GetResource("Montagu Slab 144pt", 12f, FontStyle.Regular),
+                AutoSize = true,
+                Padding = new Padding(3),
+                TextAlign = ContentAlignment.BottomLeft,
+            };
+
+        _headerPanel?.Controls.Add(logoImage);
+        _headerPanel?.Controls.Add(titleLabel);
+    }
 
     private void AddFooter() { }
 
@@ -45,7 +72,6 @@ internal class NavigationViewUC(ILogger<NavigationViewUC> logger)
             Dock = DockStyle.Top,
             FlowDirection = FlowDirection.LeftToRight,
             Height = 60,
-            WrapContents = false,
             BackColor = Color.Transparent,
         };
 
