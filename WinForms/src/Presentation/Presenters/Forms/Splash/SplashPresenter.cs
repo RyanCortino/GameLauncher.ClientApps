@@ -9,13 +9,13 @@ internal class SplashPresenter(
     IOptions<ApplicationOptions> applicationOptions,
     IResourceFactory<Image> imageFactory,
     IResourceFactory<Icon> iconFactory,
-    IFontFactory fontFactory,
+    IResourceFactory<Font> fontFactory,
     ILogger<SplashPresenter> logger
 ) : FormPresenter(splashView, logger), ISplashPresenter
 {
     private readonly ApplicationOptions _applicationOptions = applicationOptions.Value;
 
-    private readonly IFontFactory _fontFactory = fontFactory;
+    private readonly IResourceFactory<Font> _fontFactory = fontFactory;
     private readonly IResourceFactory<Image> _imageFactory = imageFactory;
     private readonly IResourceFactory<Icon> _iconFactory = iconFactory;
 
@@ -58,7 +58,7 @@ internal class SplashPresenter(
                 // Start the default delay given the provided app setting
                 DelayWithProgressUpdate((int)(_applicationOptions.DefaultSplashScreenDelay * 1000)),
                 // Load fonts from the embedded resources
-                LoadFonts(),
+                Load(_fontFactory, ["Montserrat-Variable.ttf", "MontaguSlab-Variable.ttf"]),
                 // Load images from the embedded resources
                 Load(_imageFactory, []),
                 // Load icons from the embedded resources
@@ -82,14 +82,22 @@ internal class SplashPresenter(
         });
     }
 
-    private Task Load<TType>(IResourceFactory<TType> factory, string[] resourceFilenames)
+    private Task Load<TType>(
+        IResourceFactory<TType> factory,
+        string[] resourceFilenames,
+        string? manifestBaseOverride = null
+    )
     {
         return Task.Run(() =>
         {
             foreach (var filename in resourceFilenames)
             {
+                var manifestBase = manifestBaseOverride is null
+                    ? $"{CoreAssembly.Name}.Resources."
+                    : manifestBaseOverride;
+
                 var resourceStream = CoreAssembly.Reference.GetManifestResourceStream(
-                    $"{CoreAssembly.Name}.Resources.{filename.Replace("/", ".")}"
+                    manifestBase + $"{filename.Replace("/", ".")}"
                 );
 
                 if (resourceStream is null)
@@ -108,34 +116,6 @@ internal class SplashPresenter(
                 "{Count} resources loaded into {Factory}.",
                 factory.Count,
                 factory.GetType().Name
-            );
-        });
-    }
-
-    private Task LoadFonts(string[]? fontFileNames = null)
-    {
-        fontFileNames ??= ["MontaguSlab.ttf", "Montserrat.ttf", "Montserrat-Italic.ttf"];
-
-        return Task.Run(() =>
-        {
-            foreach (var fontFileName in fontFileNames)
-            {
-                var fontStream = CoreAssembly.Reference.GetManifestResourceStream(
-                    $"{CoreAssembly.Name}.Resources.{fontFileName.Replace("/", ".")}"
-                );
-
-                if (fontStream is null)
-                    continue;
-
-                _fontFactory.LoadFont(fontFileName, fontStream);
-
-                UpdateProgress($"Loaded font by name: {fontFileName}");
-            }
-
-            _logger.LogInformation(
-                "{Count} fonts loaded into {Factory}.",
-                _fontFactory.Count,
-                _fontFactory.GetType().Name
             );
         });
     }

@@ -17,7 +17,7 @@ public static class DependencyInjection
         // Factories
         services.AddScoped<IResourceFactory<Icon>, IconResourceFactory>();
         services.AddScoped<IResourceFactory<Image>, ImageResourceFactory>();
-        services.AddScoped<IFontFactory, FontFactory>();
+        services.AddScoped<IResourceFactory<Font>, FontResourceFactory>();
 
         // User Controls
         services.AddTransient<INavigationView, NavigationViewUC>();

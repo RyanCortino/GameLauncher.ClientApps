@@ -14,21 +14,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Resources\Fonts\**" />
-	  <EmbeddedResource Remove="Resources\Fonts\**" />
-	  <None Remove="Resources\Fonts\**" />
-	</ItemGroup>
-
-  <ItemGroup>
-	  <None Remove="Resources\GameLauncher.ico" />
-	  <None Remove="Resources\Home.ico" />
-	  <None Remove="Resources\Library.ico" />
-	  <None Remove="Resources\MontaguSlab.ttf" />
-	  <None Remove="Resources\Montserrat-Italic.ttf" />
-	  <None Remove="Resources\Montserrat.ttf" />
-	  <None Remove="Resources\Settings.ico" />
-	  <None Remove="Resources\SplashImage.ico" />
-	  <None Remove="Resources\SplashImage.png" />
+	  <None Remove="Resources\MontaguSlab-Variable.ttf" />
+	  <None Remove="Resources\Montserrat-Variable.ttf" />
 	</ItemGroup>
 
   <ItemGroup>
@@ -36,8 +23,7 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
-	
-  <ItemGroup>
+	  <ItemGroup>
 	  <Content Include="appsettings.Development.json">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
@@ -52,31 +38,14 @@
 
 	
   <ItemGroup>
-    <EmbeddedResource Include="Resources\GameLauncher.ico">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Home.ico">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Library.ico">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\MontaguSlab.ttf">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Montserrat-Italic.ttf">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Montserrat.ttf">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Settings.ico">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\SplashImage.ico" />
+    <EmbeddedResource Include="Resources\GameLauncher.ico" />
+    <EmbeddedResource Include="Resources\Home.ico" />
+    <EmbeddedResource Include="Resources\Library.ico" />
+    <EmbeddedResource Include="Resources\MontaguSlab-Variable.ttf" />
+    <EmbeddedResource Include="Resources\Montserrat-Variable.ttf" />
+    <EmbeddedResource Include="Resources\Settings.ico" />
     <EmbeddedResource Include="Resources\SplashImage.png" />
   </ItemGroup>
-
 	
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
@@ -94,11 +63,11 @@
     </Compile>
   </ItemGroup>
 
+	
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <CustomToolNamespace></CustomToolNamespace>
     </EmbeddedResource>
   </ItemGroup>
 
