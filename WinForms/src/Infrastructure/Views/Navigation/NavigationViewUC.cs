@@ -1,8 +1,9 @@
 ﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Menus;
 using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.UserControls.Navigation;
+using GameLauncher.ClientApps.Winforms.Infrastructure.Controls;
 using Microsoft.Extensions.Logging;
 
-namespace GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Navigation;
+namespace GameLauncher.ClientApps.Winforms.Infrastructure.Views.Navigation;
 
 internal class NavigationViewUC(
     IResourceFactory<Font> fontFactory,
@@ -26,11 +27,11 @@ internal class NavigationViewUC(
     protected override void SetupAppearence()
     {
         // docking the UserControl to the left of the parent form
-        this.Dock = DockStyle.Left;
-        this.Margin = new Padding(10);
-        this.AutoSize = false;
-        this.MinimumSize = new Size(250, 400);
-        this.BackColor = Color.LightGray;
+        Dock = DockStyle.Left;
+        Margin = new Padding(10);
+        AutoSize = false;
+        MinimumSize = new Size(250, 400);
+        BackColor = Color.LightGray;
 
         AddFlowPanels();
 
@@ -53,7 +54,7 @@ internal class NavigationViewUC(
             {
                 Text = "Game\nLauncher",
                 UseCompatibleTextRendering = true,
-                Font = _fontFactory.GetResource("Montagu Slab 144pt", 12f, FontStyle.Regular),
+                Font = _fontFactory.GetResource("Montagu Slab 144pt", 14f),
                 AutoSize = true,
                 Padding = new Padding(3),
                 TextAlign = ContentAlignment.BottomLeft,
@@ -71,7 +72,7 @@ internal class NavigationViewUC(
         {
             Dock = DockStyle.Top,
             FlowDirection = FlowDirection.LeftToRight,
-            Height = 60,
+            Height = 80,
             BackColor = Color.Transparent,
         };
 
@@ -97,9 +98,9 @@ internal class NavigationViewUC(
 
         // Control order affects the docking behavior. The body panel should be
         // added first to avoid issues with fill size.
-        this.Controls.Add(_bodyPanel);
-        this.Controls.Add(_headerPanel);
-        this.Controls.Add(_footerPanel);
+        Controls.Add(_bodyPanel);
+        Controls.Add(_headerPanel);
+        Controls.Add(_footerPanel);
     }
 
     public void ClearAllButtons()
@@ -113,15 +114,12 @@ internal class NavigationViewUC(
         if (_bodyPanel is null)
             return;
 
-        var button = new Button()
+        var button = new GraphicalButtonUC()
         {
-            Text = menuItem.Text,
-            Image = menuItem.Image,
-            AutoSize = false, // Disable AutoSize for the button
-            Width = _bodyPanel.ClientSize.Width, // Set width to match panel width
-            Height = 42, // Fixed height for the button
-            TextAlign = ContentAlignment.MiddleCenter,
-            ImageAlign = ContentAlignment.MiddleLeft,
+            ButtonText = menuItem.Text,
+            ButtonImage = menuItem.Image,
+
+            Font = _fontFactory.GetResource("Montserrat", 12),
             Margin = new Padding(0), // Remove margin to prevent gaps
         };
 

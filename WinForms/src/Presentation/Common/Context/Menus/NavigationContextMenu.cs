@@ -39,19 +39,19 @@ internal class NavigationContextMenu(IResourceFactory<Icon> iconFactory) : INavi
 
         _contextMenu.Items.Add(
             "Home",
-            _iconFactory.GetResource("Home")?.ToBitmap(),
+            _iconFactory.GetResource("Home", 16)?.ToBitmap(),
             (s, e) => HomeClicked?.Invoke(this, e)
         );
 
         _contextMenu.Items.Add(
             "Library",
-            _iconFactory.GetResource("Library")?.ToBitmap(),
+            _iconFactory.GetResource("Library", 16)?.ToBitmap(),
             (s, e) => LibraryClicked?.Invoke(this, e)
         );
 
         _contextMenu.Items.Add(
             "Settings",
-            _iconFactory.GetResource("Settings")?.ToBitmap(),
+            _iconFactory.GetResource("Settings", 16)?.ToBitmap(),
             (s, e) => SettingsClicked?.Invoke(this, e)
         );
     }

@@ -1,8 +1,8 @@
 ﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.UserControls.Content;
 using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.UserControls.Navigation;
-using GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Content;
-using GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Navigation;
 using GameLauncher.ClientApps.Winforms.Infrastructure.Factories;
+using GameLauncher.ClientApps.Winforms.Infrastructure.Views.Content;
+using GameLauncher.ClientApps.Winforms.Infrastructure.Views.Navigation;
 using Microsoft.Extensions.Configuration;
 
 namespace Microsoft.Extensions.DependencyInjection;

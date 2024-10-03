@@ -54,16 +54,19 @@ internal class FontResourceFactory : ResourceFactory<Font>
     /// <returns>The Font object if found; otherwise, null.</returns>
     public override Font? GetResource(string key) => GetResource(key, 12f, FontStyle.Regular);
 
+    public override Font? GetResource(string key, float size = 16) =>
+        GetResource(key, size, FontStyle.Regular);
+
     /// <summary>
     /// Gets the font associated with the given key and style.
     /// </summary>
     /// <param name="key">The unique key for the font resource.</param>
-    /// <param name="fontSize">The desired font size (default is 12).</param>
+    /// <param name="size">The desired font size (default is 12).</param>
     /// <param name="style">The desired font style (e.g., Regular, Bold).</param>
     /// <returns>The Font object if found; otherwise, null.</returns>
     public override Font? GetResource(
         string key,
-        float fontSize = 12f,
+        float size = 12f,
         FontStyle style = FontStyle.Regular
     )
     {
@@ -73,7 +76,7 @@ internal class FontResourceFactory : ResourceFactory<Font>
         if (fontFamily is null)
             return null;
 
-        return new Font(fontFamily, fontSize, style);
+        return new Font(fontFamily, size, style);
     }
 
     /// <summary>

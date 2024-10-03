@@ -41,6 +41,16 @@ internal class ResourceFactory<T>(Func<string, Stream, T>? streamLoader = null)
         return _resources.TryGetValue(key, out T? value) ? value : default;
     }
 
+    public virtual T? GetResource(string key, float size = 16)
+    {
+        return GetResource(key);
+    }
+
+    public virtual T? GetResource(string key, float size = 12, FontStyle style = FontStyle.Regular)
+    {
+        return GetResource(key);
+    }
+
     /// <summary>
     /// Unloads the resource associated with the given key.
     /// </summary>
@@ -69,14 +79,5 @@ internal class ResourceFactory<T>(Func<string, Stream, T>? streamLoader = null)
         }
 
         _resources.Clear();
-    }
-
-    public virtual T? GetResource(
-        string key,
-        float fontSize = 12,
-        FontStyle style = FontStyle.Regular
-    )
-    {
-        return GetResource(key);
     }
 }

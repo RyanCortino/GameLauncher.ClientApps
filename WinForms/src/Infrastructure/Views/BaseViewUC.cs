@@ -1,7 +1,7 @@
 ﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.UserControls;
 using Microsoft.Extensions.Logging;
 
-namespace GameLauncher.ClientApps.Winforms.Infrastructure.Controls;
+namespace GameLauncher.ClientApps.Winforms.Infrastructure.Views;
 
 internal class BaseViewUC(ILogger<BaseViewUC> logger) : UserControl, IUserControlView
 {
@@ -14,7 +14,7 @@ internal class BaseViewUC(ILogger<BaseViewUC> logger) : UserControl, IUserContro
 
     public virtual void InitializeView()
     {
-        _logger.LogInformation("Initializing UserControl {ucName}", this.GetType().Name);
+        _logger.LogInformation("Initializing UserControl {ucName}", GetType().Name);
 
         SetupAppearence();
 
