@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Factories;
+using Microsoft.Extensions.Configuration;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +20,10 @@ public static class DependencyInjection
         services.AddTransient<IHomeView, HomeViewUC>();
         services.AddTransient<ILibraryView, LibraryViewUC>();
         services.AddTransient<ISettingsView, SettingsViewUC>();
+
+        // Builders
+        services.AddTransient<IControlBuilderFactory, DarkModeControlFactory>();
+        services.AddTransient<IControlBuilderFactory, LightModeControlFactory>();
 
         return services;
     }
