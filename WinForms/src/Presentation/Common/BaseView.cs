@@ -28,6 +28,7 @@ public class BaseView : Form, IFormView
 
         SetSize();
         SetupAppearence();
+        SetupControls();
     }
 
     public virtual void CloseView()
@@ -91,6 +92,8 @@ public class BaseView : Form, IFormView
     {
         ViewResized?.Invoke(this, e);
     }
+
+    protected virtual void SetupControls() { }
 
     protected virtual void SetupAppearence()
     {

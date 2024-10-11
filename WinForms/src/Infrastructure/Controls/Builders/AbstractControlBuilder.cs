@@ -1,10 +1,12 @@
-﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Controls;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders;
 
 namespace GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Builders;
 
-internal abstract class ControlBuilder(Control control) : IControlBuilder
+public abstract class AbstractControlBuilder : IControlBuilder
 {
-    protected Control _control = control;
+    protected Control _control = new();
+
+    public virtual void Reset() { }
 
     public virtual IControlBuilder BuildAnchorStyles(int value)
     {
@@ -30,9 +32,11 @@ internal abstract class ControlBuilder(Control control) : IControlBuilder
         return this;
     }
 
-    public virtual IControlBuilder BuildFont(Font font)
+    public virtual IControlBuilder BuildFont(Font? font)
     {
-        _control.Font = font;
+        if (font is not null)
+            _control.Font = font;
+
         return this;
     }
 
@@ -54,77 +58,72 @@ internal abstract class ControlBuilder(Control control) : IControlBuilder
         return this;
     }
 
-    public void Reset()
-    {
-        _control = new();
-    }
-
-    public IControlBuilder BuildText(string text)
+    public virtual IControlBuilder BuildText(string text)
     {
         _control.Text = text;
         return this;
     }
 
-    public IControlBuilder BuildSize(Size size)
+    public virtual IControlBuilder BuildSize(Size size)
     {
         _control.Size = size;
         return this;
     }
 
-    public IControlBuilder BuildPadding()
+    public virtual IControlBuilder BuildPadding()
     {
         throw new NotImplementedException();
     }
 
-    public IControlBuilder BuildMargin()
+    public virtual IControlBuilder BuildMargin()
     {
         throw new NotImplementedException();
     }
 
-    public IControlBuilder BuildBorderStyle()
+    public virtual IControlBuilder BuildBorderStyle()
     {
         throw new NotImplementedException();
     }
 
-    public IControlBuilder BuildEnabledBehaviour(bool isEnabled)
+    public virtual IControlBuilder BuildEnabledBehaviour(bool isEnabled)
     {
         _control.Enabled = isEnabled;
         return this;
     }
 
-    public IControlBuilder BuildVisibleBehaviour(bool isVisible)
+    public virtual IControlBuilder BuildVisibleBehaviour(bool isVisible)
     {
         _control.Visible = isVisible;
         return this;
     }
 
-    public IControlBuilder BuildTabIndexBehaviour(int tabIndex)
+    public virtual IControlBuilder BuildTabIndexBehaviour(int tabIndex)
     {
         _control.TabIndex = tabIndex;
         return this;
     }
 
-    public IControlBuilder BuildClickEventHandler()
+    public virtual IControlBuilder BuildClickEventHandler()
     {
         throw new NotImplementedException();
     }
 
-    public IControlBuilder BuildMouseEnterEventHandler()
+    public virtual IControlBuilder BuildMouseEnterEventHandler()
     {
         throw new NotImplementedException();
     }
 
-    public IControlBuilder BuildMouseExitEventHandler()
+    public virtual IControlBuilder BuildMouseExitEventHandler()
     {
         throw new NotImplementedException();
     }
 
-    public IControlBuilder BuildKeyUpEventHandler()
+    public virtual IControlBuilder BuildKeyUpEventHandler()
     {
         throw new NotImplementedException();
     }
 
-    public IControlBuilder BuildKeyDownEventHandler()
+    public virtual IControlBuilder BuildKeyDownEventHandler()
     {
         throw new NotImplementedException();
     }

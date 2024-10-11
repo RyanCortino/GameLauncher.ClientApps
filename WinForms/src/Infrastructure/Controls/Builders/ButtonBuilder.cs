@@ -3,59 +3,60 @@ using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Controls;
 
 namespace GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Builders;
 
-internal class ButtonBuilder : ControlBuilder, IButtonBuilder
+public class ButtonBuilder : AbstractControlBuilder, IButtonBuilder
 {
-    private Button? Button => _control as Button;
+    private new Button _control = new();
 
-    public ButtonBuilder()
-        : base(new Button()) { }
+    public Button GetResult => _control;
+
+    public override void Reset() => _control = new Button();
 
     public IButtonBuilder BuildAutoSize(bool useAutoSize = true)
     {
-        Button!.AutoSize = useAutoSize;
+        _control.AutoSize = useAutoSize;
 
         return this;
     }
 
     public IButtonBuilder BuildFlatStyle(int value)
     {
-        Button!.FlatStyle = (FlatStyle)value;
+        _control.FlatStyle = (FlatStyle)value;
         return this;
     }
 
     public IButtonBuilder BuildImageAlign(int value)
     {
-        Button!.ImageAlign = (ContentAlignment)value;
+        _control.ImageAlign = (ContentAlignment)value;
         return this;
     }
 
     public IButtonBuilder BuildTextImageRelation(int value)
     {
-        Button!.TextImageRelation = (TextImageRelation)value;
+        _control.TextImageRelation = (TextImageRelation)value;
         return this;
     }
 
     public IButtonBuilder BuildDialogResult(int value)
     {
-        Button!.DialogResult = (DialogResult)value;
+        _control.DialogResult = (DialogResult)value;
         return this;
     }
 
     public IButtonBuilder BuildMaximumSize(Size size)
     {
-        Button!.MaximumSize = size;
+        _control.MaximumSize = size;
         return this;
     }
 
     public IButtonBuilder BuildMinimumSize(Size size)
     {
-        Button!.MinimumSize = size;
+        _control.MinimumSize = size;
         return this;
     }
 
     public IButtonBuilder BuildCursorBehaviour(CursorTypes cursorType)
     {
-        Button!.Cursor = cursorType switch
+        _control.Cursor = cursorType switch
         {
             CursorTypes.AppStarting => Cursors.AppStarting,
             CursorTypes.Arrow => Cursors.Arrow,

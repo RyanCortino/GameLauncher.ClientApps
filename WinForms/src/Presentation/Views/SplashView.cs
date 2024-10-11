@@ -1,31 +1,25 @@
-﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.SplashScreen;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Factories;
+using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.SplashScreen;
+using GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Builders;
+using GameLauncher.ClientApps.Winforms.Presentation.Common.Directors;
 using GameLauncher.ClientApps.Winforms.Presentation.Common.Utils;
 
 namespace GameLauncher.ClientApps.Winforms.Presentation.Views;
 
-internal class SplashView(ILogger<SplashView> logger) : BaseView(logger), ISplashView
+internal class SplashView(
+    IControlBuilderFactory controlBuilderFactory,
+    ControlsDirector controlsDirector,
+    ILogger<SplashView> logger
+) : BaseView(logger), ISplashView
 {
+    private readonly ControlsDirector _controlsDirector = controlsDirector;
+
+    private readonly LabelBuilder _labelBuilder = (LabelBuilder)
+        controlBuilderFactory.CreateLabelBuilder();
+
     private Label? _assemblyVersionLabel;
 
     private Label? _reportProgressLabel;
-
-    public string AssemblyVersion
-    {
-        get => _assemblyVersionLabel?.Text.Trim() ?? string.Empty;
-        private set
-        {
-            if (_assemblyVersionLabel is null)
-                return;
-
-            if (InvokeRequired)
-            {
-                Invoke(() => _assemblyVersionLabel.Text = value);
-                return;
-            }
-
-            _assemblyVersionLabel.Text = value;
-        }
-    }
 
     public void Report(string value)
     {
@@ -60,92 +54,107 @@ internal class SplashView(ILogger<SplashView> logger) : BaseView(logger), ISplas
 
         BackgroundImage = Image.FromStream(new MemoryStream(Properties.Resources.SplashImage));
         BackgroundImageLayout = ImageLayout.Zoom; // Adjust the layout of the background image
-
-        AddProgressBar();
-
-        AddVersionLabel();
-
-        AddReportProgressLabel();
     }
 
-    private void AddVersionLabel()
+    protected override void SetupControls()
     {
-        // Create a new label to display the version number
-        _assemblyVersionLabel = new Label
-        {
-            AutoSize = true,
-            Text = $"Version {CoreAssembly.Version}", // Set version dynamically
-            Font = new Font("Segoe UI", ClientSize.Width / 80, FontStyle.Bold), // Set font style and Dynamic Font Resizing Based on Screen Resolution
-            ForeColor = Color.FromArgb(50, 50, 50), // Set font color for good contrast
-            BackColor = Color.Transparent, // Make the label background transparent
-            TextAlign = ContentAlignment.MiddleRight, // Align text to the right
-            Anchor =
-                AnchorStyles.Bottom
-                | AnchorStyles.Right // Anchor to bottom-right of the form
-            ,
-        };
-
-        // Position the label at the bottom-right corner with padding
-        _assemblyVersionLabel.Location = new Point(
-            ClientSize.Width - _assemblyVersionLabel.Width - 20,
-            ClientSize.Height - _assemblyVersionLabel.Height - 20
-        );
-
-        // Adjust location dynamically if AutoSize changes label size
+        // Build custom controls
+        _assemblyVersionLabel = BuildVersionLabel();
         _assemblyVersionLabel.LocationChanged += (sender, e) =>
-            _assemblyVersionLabel.Location = new Point(
-                ClientSize.Width - _assemblyVersionLabel.Width - 20,
-                ClientSize.Height - _assemblyVersionLabel.Height - 20
-            );
-
-        // Add the label to the splash screen form controls
-        Controls.Add(_assemblyVersionLabel);
-    }
-
-    private void AddReportProgressLabel()
-    {
-        // Create a new label to display the version number
-        _reportProgressLabel = new Label
         {
-            AutoSize = true,
-            Text = $"Preloading assets..", // Set version dynamically
-            Font = new Font("Segoe UI", ClientSize.Width / 100, FontStyle.Regular), // Set font style and Dynamic Font Resizing Based on Screen Resolution
-            ForeColor = Color.FromArgb(50, 50, 50), // Set font color for good contrast
-            BackColor = Color.Transparent, // Make the label background transparent
-            TextAlign = ContentAlignment.MiddleLeft, // Align text to the right
-            Anchor =
-                AnchorStyles.Bottom
-                | AnchorStyles.Left // Anchor to bottom-left of the form
-            ,
+            if (_assemblyVersionLabel is not null)
+                _assemblyVersionLabel.Location = new Point(
+                    ClientSize.Width - _assemblyVersionLabel.Width - 20,
+                    ClientSize.Height - _assemblyVersionLabel.Height - 20
+                );
         };
 
-        // Position the label at the bottom-letft corner with padding
-        _reportProgressLabel.Location = new Point(
-            20,
-            ClientSize.Height - _reportProgressLabel.Height - 20
+        _reportProgressLabel = BuildReportProgressLabel();
+        _reportProgressLabel.LocationChanged += (sender, e) =>
+        {
+            if (_assemblyVersionLabel is not null)
+                _assemblyVersionLabel.Location = new Point(
+                    20,
+                    ClientSize.Height - _assemblyVersionLabel.Height - 20
+                );
+        };
+
+        // Add required controls to the splash screen form
+        Controls.Add(
+            new ProgressBar
+            {
+                Style = ProgressBarStyle.Marquee,
+                Dock = DockStyle.Bottom,
+                Height = 10,
+            }
         );
 
-        // Adjust location dynamically if AutoSize changes label size
-        _reportProgressLabel.LocationChanged += (sender, e) =>
-            _reportProgressLabel.Location = new Point(
-                20,
-                ClientSize.Height - _reportProgressLabel.Height - 20
-            );
+        Controls.Add(_assemblyVersionLabel);
 
-        // Add the label to the splash screen form controls
         Controls.Add(_reportProgressLabel);
     }
 
-    private void AddProgressBar()
+    private Label BuildVersionLabel()
     {
-        // add a progress bar
-        var progressBar = new ProgressBar
-        {
-            Style = ProgressBarStyle.Marquee,
-            Dock = DockStyle.Bottom,
-            Height = 10,
-        };
+        _controlsDirector.SetBuilder(_labelBuilder);
 
-        Controls.Add(progressBar);
+        // Build Common Properties
+        _controlsDirector.MakeSimpleControl(
+            // Position the label at the bottom-right corner with padding
+            startingLocation: _assemblyVersionLabel is not null
+                ? new Point(
+                    ClientSize.Width - _assemblyVersionLabel.Width - 20,
+                    ClientSize.Height - _assemblyVersionLabel.Height - 20
+                )
+                : null
+        );
+
+        // Build Text Properties
+        _controlsDirector.MakeTextControl(
+            // Set version dynamically
+            text: $"Version {CoreAssembly.Version}",
+            // Set font style and Dynamic Font Resizing Based on Screen Resolution
+            font: new Font("Segoe UI", ClientSize.Width / 80, FontStyle.Bold),
+            // Set contrasting color
+            color: ColorTranslator.FromHtml("#CCCCCC")
+        );
+
+        // Call a few build steps specific to this element
+        _labelBuilder
+            // Make the label background transparent
+            .BuildBackColor(Color.Transparent)
+            // Anchor to bottom-right of the form
+            .BuildAnchorStyles((int)(AnchorStyles.Bottom | AnchorStyles.Right));
+
+        // Produce the resulting label control
+        return _labelBuilder.GetResult;
+    }
+
+    private Label BuildReportProgressLabel()
+    {
+        _controlsDirector.SetBuilder(_labelBuilder);
+
+        _controlsDirector.MakeSimpleControl(
+            startingLocation: _reportProgressLabel is not null
+                ? new Point(20, ClientSize.Height - _reportProgressLabel.Height - 20)
+                : null
+        );
+
+        _controlsDirector.MakeTextControl(
+            text: $"Preloading assets..",
+            font: new Font("Segoe UI", ClientSize.Width / 100, FontStyle.Regular),
+            color: ColorTranslator.FromHtml("#CCCCCC")
+        );
+
+        // Call a few build steps specific to this element
+        _labelBuilder
+            // Make the label background transparent
+            .BuildBackColor(Color.Transparent)
+            // Align text to the right
+            .BuildTextAlign((int)ContentAlignment.MiddleLeft)
+            // Anchor to bottom-left of the form
+            .BuildAnchorStyles((int)(AnchorStyles.Bottom | AnchorStyles.Left));
+
+        return _labelBuilder.GetResult;
     }
 }

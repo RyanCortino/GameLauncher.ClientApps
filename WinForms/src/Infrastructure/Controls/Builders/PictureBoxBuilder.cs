@@ -2,28 +2,32 @@
 
 namespace GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Builders;
 
-internal class PictureBoxBuilder : ControlBuilder, IPictureBoxBuilder
+public class PictureBoxBuilder : AbstractControlBuilder, IPictureBoxBuilder
 {
-    private PictureBox? PictureBox => _control as PictureBox;
+    private new PictureBox _control = new();
 
-    public PictureBoxBuilder()
-        : base(new PictureBox()) { }
+    public PictureBox GetResult => _control;
+
+    public override void Reset()
+    {
+        _control = new PictureBox();
+    }
 
     public IPictureBoxBuilder BuildSizeMode(int value)
     {
-        PictureBox!.SizeMode = (PictureBoxSizeMode)value;
+        _control.SizeMode = (PictureBoxSizeMode)value;
         return this;
     }
 
     public IPictureBoxBuilder BuildErrorImage(Image? image)
     {
-        PictureBox!.ErrorImage = image;
+        _control.ErrorImage = image;
         return this;
     }
 
     public IPictureBoxBuilder BuildInitialImage(Image? image)
     {
-        PictureBox!.InitialImage = image;
+        _control.InitialImage = image;
         return this;
     }
 }

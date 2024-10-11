@@ -1,13 +1,14 @@
 ﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Controls;
 using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Themes;
+using GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Builders;
 
 namespace GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Factories;
 
 internal class DarkModeControlFactory(
     IDarkModeTheme darkModeTheme,
-    IButtonBuilder buttonBuilder,
-    ILabelBuilder labelBuilder,
-    IPictureBoxBuilder pictureBoxBuilder
+    ButtonBuilder buttonBuilder,
+    LabelBuilder labelBuilder,
+    PictureBoxBuilder pictureBoxBuilder
 ) : ControlBuilderFactory(buttonBuilder, labelBuilder, pictureBoxBuilder)
 {
     private readonly IGuiTheme _themeDto = darkModeTheme;

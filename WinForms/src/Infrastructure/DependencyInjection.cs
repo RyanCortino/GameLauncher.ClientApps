@@ -1,4 +1,5 @@
-﻿using GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Factories;
+﻿using GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Builders;
+using GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Factories;
 using Microsoft.Extensions.Configuration;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -22,6 +23,10 @@ public static class DependencyInjection
         services.AddTransient<ISettingsView, SettingsViewUC>();
 
         // Builders
+        services.AddTransient<ButtonBuilder>();
+        services.AddTransient<LabelBuilder>();
+        services.AddTransient<PictureBoxBuilder>();
+
         services.AddTransient<IControlBuilderFactory, DarkModeControlFactory>();
         services.AddTransient<IControlBuilderFactory, LightModeControlFactory>();
 

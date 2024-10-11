@@ -1,15 +1,13 @@
 ﻿using System.Drawing;
 
-namespace GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Controls;
+namespace GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders;
 
-public interface IControlBuilder
+public interface IControlBuilder : IBuilder
 {
-    public void Reset();
-
     // Common Text-Related Properties
     public IControlBuilder BuildText(string text);
 
-    public IControlBuilder BuildFont(Font font);
+    public IControlBuilder BuildFont(Font? font);
 
     public IControlBuilder BuildForeColor(Color color);
 
