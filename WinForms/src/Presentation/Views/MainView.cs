@@ -1,14 +1,19 @@
-﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Factories;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders.Controls;
+using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Factories;
 using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.MainMdiForm;
 using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.UserControls;
 
 namespace GameLauncher.ClientApps.Winforms.Presentation.Views;
 
-internal class MainView(IResourceFactory<Icon> iconFactory, ILogger<MainView> logger)
-    : BaseView(logger),
-        IMainView
+internal class MainView(
+    IResourceFactory<Icon> iconFactory,
+    IPictureBoxBuilder pictureBoxBuilder,
+    ILogger<MainView> logger
+) : BaseView(logger), IMainView
 {
     private readonly IResourceFactory<Icon> _iconFactory = iconFactory;
+
+    private readonly IPictureBoxBuilder _pictureBoxBuilder = pictureBoxBuilder;
 
     public void AddControl(IUserControlView? userControl)
     {
