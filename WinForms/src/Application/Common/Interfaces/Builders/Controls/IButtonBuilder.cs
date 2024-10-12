@@ -1,11 +1,12 @@
 ﻿using System.Drawing;
 using GameLauncher.ClientApps.Winforms.Application.Common.Enums;
-using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders;
 
-namespace GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Controls;
+namespace GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders.Controls;
 
 public interface IButtonBuilder : IControlBuilder
 {
+    public IButtonBuilder BuildBorder(Color color, int size);
+
     public IButtonBuilder BuildFlatStyle(int value);
 
     public IButtonBuilder BuildImageAlign(int value);

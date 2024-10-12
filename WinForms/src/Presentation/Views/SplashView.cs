@@ -1,4 +1,4 @@
-﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Factories;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders.Controls;
 using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.SplashScreen;
 using GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Builders;
 using GameLauncher.ClientApps.Winforms.Presentation.Common.Directors;
@@ -102,8 +102,7 @@ internal class SplashView(
         _controlsDirector.ApplyCurrentTheme();
 
         _controlsDirector.MakeSimpleControl(
-            // Position the label at the bottom-right corner with padding
-            startingLocation: _assemblyVersionLabel is not null
+            _assemblyVersionLabel is not null
                 ? new Point(
                     ClientSize.Width - _assemblyVersionLabel.Width - 20,
                     ClientSize.Height - _assemblyVersionLabel.Height - 20
@@ -116,9 +115,7 @@ internal class SplashView(
             // Set version dynamically
             text: $"Version {CoreAssembly.Version}",
             // Set font style and Dynamic Font Resizing Based on Screen Resolution
-            font: new Font("Segoe UI", ClientSize.Width / 80, FontStyle.Bold),
-            // Set contrasting color
-            color: ColorTranslator.FromHtml("#CCCCCC")
+            font: new Font("Segoe UI", ClientSize.Width / 80, FontStyle.Bold)
         );
 
         // Call a few build steps specific to this element
@@ -137,15 +134,15 @@ internal class SplashView(
         _controlsDirector.SetBuilder(_labelBuilder);
 
         _controlsDirector.MakeSimpleControl(
-            startingLocation: _reportProgressLabel is not null
+            _reportProgressLabel is not null
                 ? new Point(20, ClientSize.Height - _reportProgressLabel.Height - 20)
                 : null
         );
 
         _controlsDirector.MakeTextControl(
             text: $"Preloading assets..",
-            font: new Font("Segoe UI", ClientSize.Width / 100, FontStyle.Regular),
-            color: ColorTranslator.FromHtml("#CCCCCC")
+            font: new Font("Segoe UI", ClientSize.Width / 80, FontStyle.Regular),
+            color: ColorTranslator.FromHtml("#808080")
         );
 
         // Call a few build steps specific to this element

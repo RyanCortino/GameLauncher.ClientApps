@@ -1,4 +1,4 @@
-﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Controls;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders.Controls;
 
 namespace GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Builders;
 
@@ -7,8 +7,6 @@ public class LabelBuilder : AbstractControlBuilder, ILabelBuilder
     private new Label _control = new();
 
     public Label GetResult => _control;
-
-    public override void Reset() => _control = new Label();
 
     public ILabelBuilder BuildAutoSize(bool useAutoSize = true)
     {
@@ -34,9 +32,18 @@ public class LabelBuilder : AbstractControlBuilder, ILabelBuilder
         return this;
     }
 
+    public ILabelBuilder BuildBorderStyle(int value)
+    {
+        _control.BorderStyle = (BorderStyle)value;
+
+        return this;
+    }
+
+    public override void Reset() => _control = new Label();
+
     public override ILabelBuilder BuildAnchorStyles(int value)
     {
-        base.BuildAnchorStyles(value);
+        _control.Anchor = (AnchorStyles)value;
         return this;
     }
 
@@ -48,115 +55,116 @@ public class LabelBuilder : AbstractControlBuilder, ILabelBuilder
 
     public override ILabelBuilder BuildBackgroundImageLayout(int value)
     {
-        base.BuildBackgroundImageLayout(value);
+        _control.BackgroundImageLayout = (ImageLayout)value;
         return this;
     }
 
     public override ILabelBuilder BuildDockStyle(int value)
     {
-        base.BuildDockStyle(value);
+        _control.Dock = (DockStyle)value;
         return this;
     }
 
     public override ILabelBuilder BuildFont(Font? font)
     {
-        base.BuildFont(font);
+        _control.Font = font ?? default;
         return this;
     }
 
     public override ILabelBuilder BuildForeColor(Color color)
     {
-        base.BuildForeColor(color);
+        _control.ForeColor = color;
         return this;
     }
 
     public override ILabelBuilder BuildBackgroundImage(Image image)
     {
-        base.BuildBackgroundImage(image);
+        _control.BackgroundImage = image;
         return this;
     }
 
     public override ILabelBuilder BuildLocation(Point point)
     {
-        base.BuildLocation(point);
+        _control.Location = point;
         return this;
     }
 
     public override ILabelBuilder BuildText(string text)
     {
-        base.BuildText(text);
+        _control.Text = text;
         return this;
     }
 
     public override ILabelBuilder BuildSize(Size size)
     {
-        base.BuildSize(size);
+        _control.Size = size;
         return this;
     }
 
-    public override ILabelBuilder BuildPadding()
+    public override ILabelBuilder BuildPadding(int all)
     {
-        base.BuildPadding();
+        _control.Padding = new Padding(all);
         return this;
     }
 
-    public override ILabelBuilder BuildMargin()
+    public override ILabelBuilder BuildPadding(int left, int top, int right, int bottom)
     {
-        base.BuildMargin();
+        _control.Padding = new Padding(left, top, right, bottom);
         return this;
     }
 
-    public override ILabelBuilder BuildBorderStyle()
+    public override ILabelBuilder BuildMargin(int all)
     {
-        base.BuildBorderStyle();
+        _control.Margin = new Padding(all);
+        return this;
+    }
+
+    public override ILabelBuilder BuildMargin(int left, int top, int right, int bottom)
+    {
+        _control.Margin = new Padding(left, top, right, bottom);
         return this;
     }
 
     public override ILabelBuilder BuildEnabledBehaviour(bool isEnabled)
     {
-        base.BuildEnabledBehaviour(isEnabled);
+        _control.Enabled = isEnabled;
         return this;
     }
 
     public override ILabelBuilder BuildVisibleBehaviour(bool isVisible)
     {
-        base.BuildVisibleBehaviour(isVisible);
+        _control.Visible = isVisible;
         return this;
     }
 
     public override ILabelBuilder BuildTabIndexBehaviour(int tabIndex)
     {
-        base.BuildTabIndexBehaviour(tabIndex);
+        _control.TabIndex = tabIndex;
         return this;
     }
 
     public override ILabelBuilder BuildClickEventHandler()
     {
-        base.BuildClickEventHandler();
-        return this;
+        throw new NotImplementedException();
     }
 
     public override ILabelBuilder BuildMouseEnterEventHandler()
     {
-        base.BuildMouseEnterEventHandler();
-        return this;
+        throw new NotImplementedException();
     }
 
     public override ILabelBuilder BuildMouseExitEventHandler()
     {
-        base.BuildMouseExitEventHandler();
-        return this;
+        throw new NotImplementedException();
     }
 
     public override ILabelBuilder BuildKeyUpEventHandler()
     {
-        base.BuildKeyUpEventHandler();
-        return this;
+        throw new NotImplementedException();
     }
 
     public override ILabelBuilder BuildKeyDownEventHandler()
     {
-        base.BuildKeyDownEventHandler();
-        return this;
+        throw new NotImplementedException();
     }
 }

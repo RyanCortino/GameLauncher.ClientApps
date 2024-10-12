@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
-using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders;
 
-namespace GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Controls;
+namespace GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders.Controls;
 
 public interface IPictureBoxBuilder : IControlBuilder
 {

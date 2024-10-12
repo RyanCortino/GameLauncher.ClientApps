@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
-using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders;
 
-namespace GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Controls;
+namespace GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders.Controls;
 
 public interface ILabelBuilder : IControlBuilder
 {
@@ -12,4 +11,6 @@ public interface ILabelBuilder : IControlBuilder
     public ILabelBuilder BuildMaximumSize(Size size);
 
     public ILabelBuilder BuildMinimumSize(Size size);
+
+    public ILabelBuilder BuildBorderStyle(int value);
 }

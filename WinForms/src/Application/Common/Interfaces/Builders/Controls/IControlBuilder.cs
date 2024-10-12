@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders;
+namespace GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders.Controls;
 
 public interface IControlBuilder : IBuilder
 {
@@ -18,9 +18,13 @@ public interface IControlBuilder : IBuilder
 
     public IControlBuilder BuildLocation(Point point);
 
-    public IControlBuilder BuildPadding();
+    public IControlBuilder BuildPadding(int all);
 
-    public IControlBuilder BuildMargin();
+    public IControlBuilder BuildMargin(int all);
+
+    public IControlBuilder BuildPadding(int left, int top, int right, int bottom);
+
+    public IControlBuilder BuildMargin(int left, int top, int right, int bottom);
 
     public IControlBuilder BuildDockStyle(int value);
 
@@ -28,7 +32,6 @@ public interface IControlBuilder : IBuilder
 
     // Common Appearance Properties
 
-    public IControlBuilder BuildBorderStyle();
 
     public IControlBuilder BuildBackgroundImage(Image image);
 

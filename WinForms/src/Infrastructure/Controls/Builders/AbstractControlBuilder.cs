@@ -1,4 +1,4 @@
-﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders.Controls;
 
 namespace GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Builders;
 
@@ -6,125 +6,49 @@ public abstract class AbstractControlBuilder : IControlBuilder
 {
     protected Control _control = new();
 
-    public virtual void Reset() { }
+    public abstract void Reset();
 
-    public virtual IControlBuilder BuildAnchorStyles(int value)
-    {
-        _control.Anchor = (AnchorStyles)value;
-        return this;
-    }
+    public abstract IControlBuilder BuildAnchorStyles(int value);
 
-    public virtual IControlBuilder BuildBackColor(Color color)
-    {
-        _control.BackColor = color;
-        return this;
-    }
+    public abstract IControlBuilder BuildBackColor(Color color);
 
-    public virtual IControlBuilder BuildBackgroundImageLayout(int value)
-    {
-        _control.BackgroundImageLayout = (ImageLayout)value;
-        return this;
-    }
+    public abstract IControlBuilder BuildBackgroundImageLayout(int value);
 
-    public virtual IControlBuilder BuildDockStyle(int value)
-    {
-        _control.Dock = (DockStyle)value;
-        return this;
-    }
+    public abstract IControlBuilder BuildDockStyle(int value);
 
-    public virtual IControlBuilder BuildFont(Font? font)
-    {
-        if (font is not null)
-            _control.Font = font;
+    public abstract IControlBuilder BuildFont(Font? font);
 
-        return this;
-    }
+    public abstract IControlBuilder BuildForeColor(Color color);
 
-    public virtual IControlBuilder BuildForeColor(Color color)
-    {
-        _control.ForeColor = color;
-        return this;
-    }
+    public abstract IControlBuilder BuildBackgroundImage(Image image);
 
-    public virtual IControlBuilder BuildBackgroundImage(Image image)
-    {
-        _control.BackgroundImage = image;
-        return this;
-    }
+    public abstract IControlBuilder BuildLocation(Point point);
 
-    public virtual IControlBuilder BuildLocation(Point point)
-    {
-        _control.Location = point;
-        return this;
-    }
+    public abstract IControlBuilder BuildText(string text);
 
-    public virtual IControlBuilder BuildText(string text)
-    {
-        _control.Text = text;
-        return this;
-    }
+    public abstract IControlBuilder BuildSize(Size size);
 
-    public virtual IControlBuilder BuildSize(Size size)
-    {
-        _control.Size = size;
-        return this;
-    }
+    public abstract IControlBuilder BuildPadding(int all);
 
-    public virtual IControlBuilder BuildPadding()
-    {
-        throw new NotImplementedException();
-    }
+    public abstract IControlBuilder BuildMargin(int all);
 
-    public virtual IControlBuilder BuildMargin()
-    {
-        throw new NotImplementedException();
-    }
+    public abstract IControlBuilder BuildPadding(int left, int top, int right, int bottom);
 
-    public virtual IControlBuilder BuildBorderStyle()
-    {
-        throw new NotImplementedException();
-    }
+    public abstract IControlBuilder BuildMargin(int left, int top, int right, int bottom);
 
-    public virtual IControlBuilder BuildEnabledBehaviour(bool isEnabled)
-    {
-        _control.Enabled = isEnabled;
-        return this;
-    }
+    public abstract IControlBuilder BuildEnabledBehaviour(bool isEnabled);
 
-    public virtual IControlBuilder BuildVisibleBehaviour(bool isVisible)
-    {
-        _control.Visible = isVisible;
-        return this;
-    }
+    public abstract IControlBuilder BuildVisibleBehaviour(bool isVisible);
 
-    public virtual IControlBuilder BuildTabIndexBehaviour(int tabIndex)
-    {
-        _control.TabIndex = tabIndex;
-        return this;
-    }
+    public abstract IControlBuilder BuildTabIndexBehaviour(int tabIndex);
 
-    public virtual IControlBuilder BuildClickEventHandler()
-    {
-        throw new NotImplementedException();
-    }
+    public abstract IControlBuilder BuildClickEventHandler();
 
-    public virtual IControlBuilder BuildMouseEnterEventHandler()
-    {
-        throw new NotImplementedException();
-    }
+    public abstract IControlBuilder BuildMouseEnterEventHandler();
 
-    public virtual IControlBuilder BuildMouseExitEventHandler()
-    {
-        throw new NotImplementedException();
-    }
+    public abstract IControlBuilder BuildMouseExitEventHandler();
 
-    public virtual IControlBuilder BuildKeyUpEventHandler()
-    {
-        throw new NotImplementedException();
-    }
+    public abstract IControlBuilder BuildKeyUpEventHandler();
 
-    public virtual IControlBuilder BuildKeyDownEventHandler()
-    {
-        throw new NotImplementedException();
-    }
+    public abstract IControlBuilder BuildKeyDownEventHandler();
 }
