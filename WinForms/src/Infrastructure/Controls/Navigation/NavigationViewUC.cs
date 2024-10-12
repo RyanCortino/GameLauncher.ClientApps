@@ -13,16 +13,10 @@ internal class NavigationViewUC(
     private FlowLayoutPanel? _bodyPanel;
     private FlowLayoutPanel? _footerPanel;
 
-    public override void InitializeView()
-    {
-        // Setup Appearance called from base view
-        base.InitializeView();
-    }
-
     protected override void SetupAppearence()
     {
         // docking the UserControl to the left of the parent form
-        this.Dock = DockStyle.Left;
+        this.Dock = DockStyle.Fill;
         this.Margin = new Padding(10);
         this.AutoSize = false;
         this.MinimumSize = new Size(250, 400);

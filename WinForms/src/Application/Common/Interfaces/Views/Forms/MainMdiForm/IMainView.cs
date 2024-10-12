@@ -6,6 +6,6 @@ namespace GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.F
     public interface IMainView : IFormView
     {
         void CloseAll();
-        void AddControl(IUserControlView? userControl);
+        void AddUserControl(IUserControlView? userControl);
     }
 }

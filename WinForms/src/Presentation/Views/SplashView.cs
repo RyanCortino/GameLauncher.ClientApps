@@ -7,14 +7,14 @@ using GameLauncher.ClientApps.Winforms.Presentation.Common.Utils;
 namespace GameLauncher.ClientApps.Winforms.Presentation.Views;
 
 internal class SplashView(
-    ILabelBuilder labelBuilder,
     ControlsDirector controlsDirector,
+    ILabelBuilder labelBuilder,
     ILogger<SplashView> logger
 ) : BaseView(logger), ISplashView
 {
     private readonly ControlsDirector _controlsDirector = controlsDirector;
 
-    private readonly LabelBuilder _labelBuilder = (LabelBuilder)labelBuilder;
+    private readonly ILabelBuilder _labelBuilder = labelBuilder;
 
     private Label? _assemblyVersionLabel = new();
 
@@ -73,10 +73,10 @@ internal class SplashView(
 
         _reportProgressLabel.LocationChanged += (sender, e) =>
         {
-            if (_assemblyVersionLabel is not null)
-                _assemblyVersionLabel.Location = new Point(
+            if (_reportProgressLabel is not null)
+                _reportProgressLabel.Location = new Point(
                     20,
-                    ClientSize.Height - _assemblyVersionLabel.Height - 20
+                    ClientSize.Height - _reportProgressLabel.Height - 20
                 );
         };
 
@@ -97,7 +97,9 @@ internal class SplashView(
 
     private Label BuildVersionLabel()
     {
-        _controlsDirector.SetBuilder(_labelBuilder);
+        var builder = (LabelBuilder)_labelBuilder;
+
+        _controlsDirector.SetBuilder(builder);
 
         _controlsDirector.ApplyCurrentTheme();
 
@@ -119,19 +121,21 @@ internal class SplashView(
         );
 
         // Call a few build steps specific to this element
-        _labelBuilder
+        builder
             // Make the label background transparent
             .BuildBackColor(Color.Transparent)
             // Anchor to bottom-right of the form
             .BuildAnchorStyles((int)(AnchorStyles.Bottom | AnchorStyles.Right));
-
         // Produce the resulting label control
-        return _labelBuilder.GetResult;
+
+        return builder.GetResult;
     }
 
     private Label BuildReportProgressLabel()
     {
-        _controlsDirector.SetBuilder(_labelBuilder);
+        var builder = (LabelBuilder)_labelBuilder;
+
+        _controlsDirector.SetBuilder(builder);
 
         _controlsDirector.MakeSimpleControl(
             _reportProgressLabel is not null
@@ -146,7 +150,7 @@ internal class SplashView(
         );
 
         // Call a few build steps specific to this element
-        _labelBuilder
+        builder
             // Make the label background transparent
             .BuildBackColor(Color.Transparent)
             // Align text to the right
@@ -154,6 +158,6 @@ internal class SplashView(
             // Anchor to bottom-left of the form
             .BuildAnchorStyles((int)(AnchorStyles.Bottom | AnchorStyles.Left));
 
-        return _labelBuilder.GetResult;
+        return builder.GetResult;
     }
 }

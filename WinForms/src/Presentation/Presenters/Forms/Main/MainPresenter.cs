@@ -36,7 +36,7 @@ internal class MainPresenter(
         _navigationPresenter.InitializePresenter();
 
         View.InitializeView();
-        View.AddControl(_navigationPresenter.View);
+        View.AddUserControl(_navigationPresenter.View);
 
         _navigationPresenter.ContextMenu.HomeClicked += OnHomeClicked;
         _navigationPresenter.ContextMenu.LibraryClicked += OnLibraryClicked;
