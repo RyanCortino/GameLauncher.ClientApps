@@ -1,4 +1,4 @@
-﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Controls;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders.Controls;
 
 namespace GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Factories;
 

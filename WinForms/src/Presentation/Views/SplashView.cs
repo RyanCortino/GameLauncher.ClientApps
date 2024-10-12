@@ -7,19 +7,18 @@ using GameLauncher.ClientApps.Winforms.Presentation.Common.Utils;
 namespace GameLauncher.ClientApps.Winforms.Presentation.Views;
 
 internal class SplashView(
-    IControlBuilderFactory controlBuilderFactory,
+    ILabelBuilder labelBuilder,
     ControlsDirector controlsDirector,
     ILogger<SplashView> logger
 ) : BaseView(logger), ISplashView
 {
     private readonly ControlsDirector _controlsDirector = controlsDirector;
 
-    private readonly LabelBuilder _labelBuilder = (LabelBuilder)
-        controlBuilderFactory.CreateLabelBuilder();
+    private readonly LabelBuilder _labelBuilder = (LabelBuilder)labelBuilder;
 
-    private Label? _assemblyVersionLabel;
+    private Label? _assemblyVersionLabel = new();
 
-    private Label? _reportProgressLabel;
+    private Label? _reportProgressLabel = new();
 
     public void Report(string value)
     {
@@ -60,6 +59,7 @@ internal class SplashView(
     {
         // Build custom controls
         _assemblyVersionLabel = BuildVersionLabel();
+
         _assemblyVersionLabel.LocationChanged += (sender, e) =>
         {
             if (_assemblyVersionLabel is not null)
@@ -70,6 +70,7 @@ internal class SplashView(
         };
 
         _reportProgressLabel = BuildReportProgressLabel();
+
         _reportProgressLabel.LocationChanged += (sender, e) =>
         {
             if (_assemblyVersionLabel is not null)
@@ -98,7 +99,8 @@ internal class SplashView(
     {
         _controlsDirector.SetBuilder(_labelBuilder);
 
-        // Build Common Properties
+        _controlsDirector.ApplyCurrentTheme();
+
         _controlsDirector.MakeSimpleControl(
             // Position the label at the bottom-right corner with padding
             startingLocation: _assemblyVersionLabel is not null
