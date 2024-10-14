@@ -2,169 +2,65 @@
 
 namespace GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Builders;
 
-public class LabelBuilder : AbstractControlBuilder, ILabelBuilder
+public class LabelBuilder(IResourceFactory<Image> imageFactory)
+    : BaseControlBuilder<Label, LabelBuilder>,
+        ILabelBuilder<LabelBuilder>
 {
-    private new Label _control = new();
+    private readonly IResourceFactory<Image> _imageFactory = imageFactory;
 
-    public Label GetResult => _control;
-
-    public ILabelBuilder BuildAutoSize(bool useAutoSize = true)
+    public LabelBuilder SetBorderStyle(int borderStyle)
     {
-        _control.AutoSize = useAutoSize;
+        _control.BorderStyle = (BorderStyle)borderStyle;
         return this;
     }
 
-    public ILabelBuilder BuildTextAlign(int value)
+    public LabelBuilder SetFlatStyle(int flatStyle)
     {
-        _control.TextAlign = (ContentAlignment)value;
+        _control.FlatStyle = (FlatStyle)flatStyle;
         return this;
     }
 
-    public ILabelBuilder BuildMaximumSize(Size size)
+    public LabelBuilder SetImage(string resourceName)
     {
-        _control.MaximumSize = size;
+        _control.Image = _imageFactory.GetResource(resourceName);
         return this;
     }
 
-    public ILabelBuilder BuildMinimumSize(Size size)
+    public LabelBuilder SetImageAlign(int contentAlignment)
     {
-        _control.MinimumSize = size;
+        _control.ImageAlign = (ContentAlignment)contentAlignment;
         return this;
     }
 
-    public ILabelBuilder BuildBorderStyle(int value)
+    public LabelBuilder SetTextAlign(int contentAlignment)
     {
-        _control.BorderStyle = (BorderStyle)value;
-
+        _control.TextAlign = (ContentAlignment)contentAlignment;
         return this;
     }
 
-    public override void Reset() => _control = new Label();
-
-    public override ILabelBuilder BuildAnchorStyles(int value)
+    public LabelBuilder UseAutoElipsis(bool shouldUseAutoElipsis = true)
     {
-        _control.Anchor = (AnchorStyles)value;
+        _control.AutoEllipsis = shouldUseAutoElipsis;
         return this;
     }
 
-    public override ILabelBuilder BuildBackColor(Color color)
+    public LabelBuilder UseAutoSize(bool shouldUseAutoSize = true)
     {
-        _control.BackColor = color;
+        _control.AutoSize = shouldUseAutoSize;
         return this;
     }
 
-    public override ILabelBuilder BuildBackgroundImageLayout(int value)
+    public LabelBuilder UseMnemonic(bool shouldUseMnemonic = true)
     {
-        _control.BackgroundImageLayout = (ImageLayout)value;
+        _control.UseMnemonic = shouldUseMnemonic;
         return this;
     }
 
-    public override ILabelBuilder BuildDockStyle(int value)
+    public LabelBuilder UseTransparentBackColor(bool shouldUseTransparentBackColor = true)
     {
-        _control.Dock = (DockStyle)value;
+        if (shouldUseTransparentBackColor)
+            _control.BackColor = Color.Transparent;
+
         return this;
-    }
-
-    public override ILabelBuilder BuildFont(Font? font)
-    {
-        _control.Font = font ?? default;
-        return this;
-    }
-
-    public override ILabelBuilder BuildForeColor(Color color)
-    {
-        _control.ForeColor = color;
-        return this;
-    }
-
-    public override ILabelBuilder BuildBackgroundImage(Image image)
-    {
-        _control.BackgroundImage = image;
-        return this;
-    }
-
-    public override ILabelBuilder BuildLocation(Point point)
-    {
-        _control.Location = point;
-        return this;
-    }
-
-    public override ILabelBuilder BuildText(string text)
-    {
-        _control.Text = text;
-        return this;
-    }
-
-    public override ILabelBuilder BuildSize(Size size)
-    {
-        _control.Size = size;
-        return this;
-    }
-
-    public override ILabelBuilder BuildPadding(int all)
-    {
-        _control.Padding = new Padding(all);
-        return this;
-    }
-
-    public override ILabelBuilder BuildPadding(int left, int top, int right, int bottom)
-    {
-        _control.Padding = new Padding(left, top, right, bottom);
-        return this;
-    }
-
-    public override ILabelBuilder BuildMargin(int all)
-    {
-        _control.Margin = new Padding(all);
-        return this;
-    }
-
-    public override ILabelBuilder BuildMargin(int left, int top, int right, int bottom)
-    {
-        _control.Margin = new Padding(left, top, right, bottom);
-        return this;
-    }
-
-    public override ILabelBuilder BuildEnabledBehaviour(bool isEnabled)
-    {
-        _control.Enabled = isEnabled;
-        return this;
-    }
-
-    public override ILabelBuilder BuildVisibleBehaviour(bool isVisible)
-    {
-        _control.Visible = isVisible;
-        return this;
-    }
-
-    public override ILabelBuilder BuildTabIndexBehaviour(int tabIndex)
-    {
-        _control.TabIndex = tabIndex;
-        return this;
-    }
-
-    public override ILabelBuilder BuildClickEventHandler()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override ILabelBuilder BuildMouseEnterEventHandler()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override ILabelBuilder BuildMouseExitEventHandler()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override ILabelBuilder BuildKeyUpEventHandler()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override ILabelBuilder BuildKeyDownEventHandler()
-    {
-        throw new NotImplementedException();
     }
 }

@@ -2,28 +2,31 @@
 using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Factories;
 using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.MainMdiForm;
 using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.UserControls;
+using GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Builders;
 
 namespace GameLauncher.ClientApps.Winforms.Presentation.Views;
 
 internal class MainView(
     IResourceFactory<Icon> iconFactory,
-    IPictureBoxBuilder pictureBoxBuilder,
+    IPictureBoxBuilder<PictureBoxBuilder> pictureBoxBuilder,
     ILogger<MainView> logger
 ) : BaseView(logger), IMainView
 {
     private readonly IResourceFactory<Icon> _iconFactory = iconFactory;
 
-    private readonly IPictureBoxBuilder _pictureBoxBuilder = pictureBoxBuilder;
+    private readonly IPictureBoxBuilder<PictureBoxBuilder> _pictureBoxBuilder = pictureBoxBuilder;
 
     private TableLayoutPanel _tableLayoutPanel = new();
     private StatusStrip _statusStrip = new();
 
-    public void AddUserControl(IUserControlView? userControl)
+    public void AddUserControl(IUserControlView? userControlView)
     {
+        using var userControl = userControlView as UserControl;
+
         if (userControl is null)
             return;
 
-        _tableLayoutPanel.Controls.Add(userControl as UserControl, 0, 0);
+        _tableLayoutPanel.Controls.Add(userControl, 0, 0);
     }
 
     protected override void SetupAppearence()

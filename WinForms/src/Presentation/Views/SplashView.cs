@@ -1,20 +1,15 @@
 ﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders.Controls;
 using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.SplashScreen;
 using GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Builders;
-using GameLauncher.ClientApps.Winforms.Presentation.Common.Directors;
 using GameLauncher.ClientApps.Winforms.Presentation.Common.Utils;
 
 namespace GameLauncher.ClientApps.Winforms.Presentation.Views;
 
-internal class SplashView(
-    ControlsDirector controlsDirector,
-    ILabelBuilder labelBuilder,
-    ILogger<SplashView> logger
-) : BaseView(logger), ISplashView
+internal class SplashView(ILabelBuilder<LabelBuilder> labelBuilder, ILogger<SplashView> logger)
+    : BaseView(logger),
+        ISplashView
 {
-    private readonly ControlsDirector _controlsDirector = controlsDirector;
-
-    private readonly ILabelBuilder _labelBuilder = labelBuilder;
+    private readonly ILabelBuilder<LabelBuilder> _labelBuilder = labelBuilder;
 
     private Label? _assemblyVersionLabel = new();
 
@@ -97,67 +92,37 @@ internal class SplashView(
 
     private Label BuildVersionLabel()
     {
-        var builder = (LabelBuilder)_labelBuilder;
+        _labelBuilder.Reset();
 
-        _controlsDirector.SetBuilder(builder);
+        _labelBuilder
+            .SetLocation(
+                ClientSize.Width - _assemblyVersionLabel!.Width - 20,
+                ClientSize.Height - _assemblyVersionLabel.Height - 20
+            )
+            .UseAutoSize()
+            .SetFont("Segoe UI", ClientSize.Width / 80, (int)FontStyle.Bold)
+            .SetText($"Version {CoreAssembly.Version}")
+            .SetForeColor("#000000")
+            .UseTransparentBackColor()
+            .SetAnchor((int)(AnchorStyles.Bottom | AnchorStyles.Right));
 
-        _controlsDirector.ApplyCurrentTheme();
-
-        _controlsDirector.MakeSimpleControl(
-            _assemblyVersionLabel is not null
-                ? new Point(
-                    ClientSize.Width - _assemblyVersionLabel.Width - 20,
-                    ClientSize.Height - _assemblyVersionLabel.Height - 20
-                )
-                : null
-        );
-
-        // Build Text Properties
-        _controlsDirector.MakeTextControl(
-            // Set version dynamically
-            text: $"Version {CoreAssembly.Version}",
-            // Set font style and Dynamic Font Resizing Based on Screen Resolution
-            font: new Font("Segoe UI", ClientSize.Width / 80, FontStyle.Bold)
-        );
-
-        // Call a few build steps specific to this element
-        builder
-            // Make the label background transparent
-            .BuildBackColor(Color.Transparent)
-            // Anchor to bottom-right of the form
-            .BuildAnchorStyles((int)(AnchorStyles.Bottom | AnchorStyles.Right));
-        // Produce the resulting label control
-
-        return builder.GetResult;
+        return (_labelBuilder as LabelBuilder)!.Build();
     }
 
     private Label BuildReportProgressLabel()
     {
-        var builder = (LabelBuilder)_labelBuilder;
+        _labelBuilder.Reset();
 
-        _controlsDirector.SetBuilder(builder);
+        _labelBuilder
+            .SetLocation(20, ClientSize.Height - _reportProgressLabel!.Height - 20)
+            .UseAutoSize()
+            .SetFont("Segoe UI", ClientSize.Width / 80, (int)FontStyle.Regular)
+            .SetText($"Preloading assets..")
+            .SetForeColor("#808080")
+            .UseTransparentBackColor()
+            .SetTextAlign((int)ContentAlignment.MiddleLeft)
+            .SetAnchor((int)(AnchorStyles.Bottom | AnchorStyles.Left));
 
-        _controlsDirector.MakeSimpleControl(
-            _reportProgressLabel is not null
-                ? new Point(20, ClientSize.Height - _reportProgressLabel.Height - 20)
-                : null
-        );
-
-        _controlsDirector.MakeTextControl(
-            text: $"Preloading assets..",
-            font: new Font("Segoe UI", ClientSize.Width / 80, FontStyle.Regular),
-            color: ColorTranslator.FromHtml("#808080")
-        );
-
-        // Call a few build steps specific to this element
-        builder
-            // Make the label background transparent
-            .BuildBackColor(Color.Transparent)
-            // Align text to the right
-            .BuildTextAlign((int)ContentAlignment.MiddleLeft)
-            // Anchor to bottom-left of the form
-            .BuildAnchorStyles((int)(AnchorStyles.Bottom | AnchorStyles.Left));
-
-        return builder.GetResult;
+        return (_labelBuilder as LabelBuilder)!.Build();
     }
 }

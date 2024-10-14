@@ -1,219 +1,98 @@
-﻿using GameLauncher.ClientApps.Winforms.Application.Common.Enums;
-using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders.Controls;
+﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders.Controls;
 
 namespace GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Builders;
 
-public class ButtonBuilder : AbstractControlBuilder, IButtonBuilder
+public class ButtonBuilder(IResourceFactory<Image> imageFactory)
+    : BaseControlBuilder<Button, ButtonBuilder>,
+        IButtonBuilder<ButtonBuilder>
 {
-    private new Button _control = new();
+    private readonly IResourceFactory<Image> _imageFactory = imageFactory;
 
-    public Button GetResult => _control;
-
-    public void PerformClick()
+    public ButtonBuilder SetDialogResult(int dialogResult)
     {
-        throw new NotImplementedException();
+        _control.DialogResult = (DialogResult)dialogResult;
+        return this;
     }
 
-    public IButtonBuilder BuildAutoSize(bool useAutoSize = true)
+    public ButtonBuilder SetFlatAppearance(
+        int borderSize,
+        string borderColor,
+        string mouseDownBackColor,
+        string mouseOverBackColor
+    )
     {
-        _control.AutoSize = useAutoSize;
+        _control.FlatAppearance.BorderSize = borderSize;
+        _control.FlatAppearance.BorderColor = ColorTranslator.FromHtml(borderColor);
+        _control.FlatAppearance.MouseDownBackColor = ColorTranslator.FromHtml(mouseDownBackColor);
+        _control.FlatAppearance.MouseOverBackColor = ColorTranslator.FromHtml(mouseOverBackColor);
 
         return this;
     }
 
-    public IButtonBuilder BuildFlatStyle(int value)
+    public ButtonBuilder SetFlatStyle(int flatStyle)
     {
-        _control.FlatStyle = (FlatStyle)value;
+        _control.FlatStyle = (FlatStyle)flatStyle;
         return this;
     }
 
-    public IButtonBuilder BuildImageAlign(int value)
+    public ButtonBuilder SetImage(string resourceName)
     {
-        _control.ImageAlign = (ContentAlignment)value;
+        _control.Image = _imageFactory.GetResource(resourceName);
         return this;
     }
 
-    public IButtonBuilder BuildTextImageRelation(int value)
+    public ButtonBuilder SetImageAlign(int contentAlignment)
     {
-        _control.TextImageRelation = (TextImageRelation)value;
+        _control.ImageAlign = (ContentAlignment)contentAlignment;
         return this;
     }
 
-    public IButtonBuilder BuildDialogResult(int value)
+    public ButtonBuilder SetImageIndex(int imageIndex)
     {
-        _control.DialogResult = (DialogResult)value;
+        _control.ImageIndex = imageIndex;
         return this;
     }
 
-    public IButtonBuilder BuildMaximumSize(Size size)
+    public ButtonBuilder SetImageList(string[] resourceNames)
     {
-        _control.MaximumSize = size;
-        return this;
-    }
+        var imageList = new ImageList();
 
-    public IButtonBuilder BuildMinimumSize(Size size)
-    {
-        _control.MinimumSize = size;
-        return this;
-    }
-
-    public IButtonBuilder BuildCursorBehaviour(CursorTypes cursorType)
-    {
-        _control.Cursor = cursorType switch
+        foreach (string resourceName in resourceNames)
         {
-            CursorTypes.AppStarting => Cursors.AppStarting,
-            CursorTypes.Arrow => Cursors.Arrow,
-            CursorTypes.Cross => Cursors.Cross,
-            CursorTypes.Hand => Cursors.Hand,
-            CursorTypes.Help => Cursors.Help,
-            CursorTypes.IBeam => Cursors.IBeam,
-            CursorTypes.No => Cursors.No,
-            CursorTypes.SizeAll => Cursors.SizeAll,
-            CursorTypes.SizeNorthEastSouthWest => Cursors.SizeNESW,
-            CursorTypes.SizeWestEast => Cursors.SizeWE,
-            CursorTypes.UpArrow => Cursors.UpArrow,
-            CursorTypes.Wait => Cursors.WaitCursor,
-            _ => Cursors.Default,
-        };
+            var img = _imageFactory.GetResource(resourceName);
+
+            if (img is null)
+                continue;
+
+            imageList.Images.Add(img);
+        }
+
+        _control.ImageList = imageList;
 
         return this;
     }
 
-    public IButtonBuilder BuildBorder(Color color, int size)
+    public ButtonBuilder SetTextAlign(int contentAlignment)
     {
-        _control.FlatStyle = FlatStyle.Flat;
-        _control.FlatAppearance.BorderColor = color;
-        _control.FlatAppearance.BorderSize = size;
-
+        _control.TextAlign = (ContentAlignment)contentAlignment;
         return this;
     }
 
-    public override void Reset() => _control = new Button();
-
-    public override IButtonBuilder BuildAnchorStyles(int value)
+    public ButtonBuilder UseAutoEllipsis(bool shouldUseAutoElipsis = true)
     {
-        _control.Anchor = (AnchorStyles)value;
+        _control.AutoEllipsis = shouldUseAutoElipsis;
         return this;
     }
 
-    public override IButtonBuilder BuildBackColor(Color color)
+    public ButtonBuilder UseMnemonic(bool shouldUseMnemonic = true)
     {
-        _control.BackColor = color;
+        _control.UseMnemonic = shouldUseMnemonic;
         return this;
     }
 
-    public override IButtonBuilder BuildBackgroundImageLayout(int value)
+    public ButtonBuilder UseVisualStyleBackColor(bool shouldUseVisualStyleBackColor = true)
     {
-        _control.BackgroundImageLayout = (ImageLayout)value;
+        _control.UseVisualStyleBackColor = shouldUseVisualStyleBackColor;
         return this;
-    }
-
-    public override IButtonBuilder BuildDockStyle(int value)
-    {
-        _control.Dock = (DockStyle)value;
-        return this;
-    }
-
-    public override IButtonBuilder BuildFont(Font? font)
-    {
-        _control.Font = font ?? default;
-        return this;
-    }
-
-    public override IButtonBuilder BuildForeColor(Color color)
-    {
-        _control.ForeColor = color;
-        return this;
-    }
-
-    public override IButtonBuilder BuildBackgroundImage(Image image)
-    {
-        _control.BackgroundImage = image;
-        return this;
-    }
-
-    public override IButtonBuilder BuildLocation(Point point)
-    {
-        _control.Location = point;
-        return this;
-    }
-
-    public override IButtonBuilder BuildText(string text)
-    {
-        _control.Text = text;
-        return this;
-    }
-
-    public override IButtonBuilder BuildSize(Size size)
-    {
-        _control.Size = size;
-        return this;
-    }
-
-    public override IButtonBuilder BuildPadding(int all)
-    {
-        _control.Padding = new Padding(all);
-        return this;
-    }
-
-    public override IButtonBuilder BuildPadding(int left, int top, int right, int bottom)
-    {
-        _control.Padding = new Padding(left, top, right, bottom);
-        return this;
-    }
-
-    public override IButtonBuilder BuildMargin(int all)
-    {
-        _control.Margin = new Padding(all);
-        return this;
-    }
-
-    public override IButtonBuilder BuildMargin(int left, int top, int right, int bottom)
-    {
-        _control.Margin = new Padding(left, top, right, bottom);
-        return this;
-    }
-
-    public override IButtonBuilder BuildEnabledBehaviour(bool isEnabled)
-    {
-        _control.Enabled = isEnabled;
-        return this;
-    }
-
-    public override IButtonBuilder BuildVisibleBehaviour(bool isVisible)
-    {
-        _control.Visible = isVisible;
-        return this;
-    }
-
-    public override IButtonBuilder BuildTabIndexBehaviour(int tabIndex)
-    {
-        _control.TabIndex = tabIndex;
-        return this;
-    }
-
-    public override IButtonBuilder BuildClickEventHandler()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override IButtonBuilder BuildMouseEnterEventHandler()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override IButtonBuilder BuildMouseExitEventHandler()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override IButtonBuilder BuildKeyUpEventHandler()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override IButtonBuilder BuildKeyDownEventHandler()
-    {
-        throw new NotImplementedException();
     }
 }

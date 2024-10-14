@@ -1,12 +1,12 @@
-﻿using System.Drawing;
+﻿namespace GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders.Controls;
 
-namespace GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders.Controls;
-
-public interface IPictureBoxBuilder : IControlBuilder
+public interface IPictureBoxBuilder<TBuilder> : IBaseControlBuilder<TBuilder>
+    where TBuilder : IBaseControlBuilder<TBuilder>
 {
-    public IPictureBoxBuilder BuildSizeMode(int value);
-
-    public IPictureBoxBuilder BuildErrorImage(Image? image);
-
-    public IPictureBoxBuilder BuildInitialImage(Image? image);
+    TBuilder SetSizeMode(int imageSizeMode);
+    TBuilder SetImageLocation(string imageLocation);
+    TBuilder ShouldWaitOnLoad(bool shouldWaitOnLoad = true);
+    TBuilder SetErrorImage(string resourceName);
+    TBuilder SetInitialImage(string resourceName);
+    TBuilder UseTransparentBackColor(bool shouldUseTransparentBackColor = true);
 }

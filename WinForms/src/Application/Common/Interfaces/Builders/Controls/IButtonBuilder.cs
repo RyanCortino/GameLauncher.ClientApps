@@ -1,27 +1,22 @@
-﻿using System.Drawing;
-using GameLauncher.ClientApps.Winforms.Application.Common.Enums;
+﻿namespace GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders.Controls;
 
-namespace GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders.Controls;
-
-public interface IButtonBuilder : IControlBuilder
+public interface IButtonBuilder<TBuilder> : IBaseControlBuilder<TBuilder>
+    where TBuilder : IBaseControlBuilder<TBuilder>
 {
-    public IButtonBuilder BuildBorder(Color color, int size);
-
-    public IButtonBuilder BuildFlatStyle(int value);
-
-    public IButtonBuilder BuildImageAlign(int value);
-
-    public IButtonBuilder BuildTextImageRelation(int value);
-
-    public IButtonBuilder BuildDialogResult(int value);
-
-    public IButtonBuilder BuildAutoSize(bool useAutoSize = true);
-
-    public IButtonBuilder BuildMaximumSize(Size size);
-
-    public IButtonBuilder BuildMinimumSize(Size size);
-
-    public IButtonBuilder BuildCursorBehaviour(CursorTypes cursorType);
-
-    void PerformClick();
+    TBuilder SetTextAlign(int contentAlignment);
+    TBuilder SetImage(string resourceName);
+    TBuilder SetImageAlign(int contentAlignment);
+    TBuilder SetFlatStyle(int flatStyle);
+    TBuilder SetFlatAppearance(
+        int borderSize,
+        string borderColor,
+        string mouseDownBackColor,
+        string mouseOverBackColor
+    );
+    TBuilder UseMnemonic(bool shouldUseMnemonic = true);
+    TBuilder SetDialogResult(int dialogResult);
+    TBuilder UseVisualStyleBackColor(bool shouldUseVisualStyleBackColor = true);
+    TBuilder UseAutoEllipsis(bool shouldUseAutoElipsis = true);
+    TBuilder SetImageIndex(int imageIndex);
+    TBuilder SetImageList(string[] resourceNames);
 }

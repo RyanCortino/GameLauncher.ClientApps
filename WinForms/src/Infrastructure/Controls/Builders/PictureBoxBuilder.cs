@@ -2,156 +2,47 @@
 
 namespace GameLauncher.ClientApps.Winforms.Infrastructure.Controls.Builders;
 
-public class PictureBoxBuilder : AbstractControlBuilder, IPictureBoxBuilder
+public class PictureBoxBuilder(IResourceFactory<Image> imageFactory)
+    : BaseControlBuilder<PictureBox, PictureBoxBuilder>,
+        IPictureBoxBuilder<PictureBoxBuilder>
 {
-    private new PictureBox _control = new();
+    private readonly IResourceFactory<Image> _imageFactory = imageFactory;
 
-    public PictureBox GetResult => _control;
-
-    public IPictureBoxBuilder BuildSizeMode(int value)
+    public PictureBoxBuilder SetErrorImage(string resourceName)
     {
-        _control.SizeMode = (PictureBoxSizeMode)value;
+        _control.ErrorImage = _imageFactory.GetResource(resourceName);
         return this;
     }
 
-    public IPictureBoxBuilder BuildErrorImage(Image? image)
+    public PictureBoxBuilder SetImageLocation(string imageLocation)
     {
-        _control.ErrorImage = image;
+        _control.ImageLocation = imageLocation;
         return this;
     }
 
-    public IPictureBoxBuilder BuildInitialImage(Image? image)
+    public PictureBoxBuilder SetSizeMode(int imageSizeMode)
     {
-        _control.InitialImage = image;
+        _control.SizeMode = (PictureBoxSizeMode)imageSizeMode;
         return this;
     }
 
-    public override void Reset() => _control = new PictureBox();
-
-    public override IPictureBoxBuilder BuildAnchorStyles(int value)
+    public PictureBoxBuilder SetInitialImage(string resourceName)
     {
-        _control.Anchor = (AnchorStyles)value;
+        _control.InitialImage = _imageFactory.GetResource(resourceName);
         return this;
     }
 
-    public override IPictureBoxBuilder BuildBackColor(Color color)
+    public PictureBoxBuilder ShouldWaitOnLoad(bool shouldWaitOnLoad = true)
     {
-        _control.BackColor = color;
+        _control.WaitOnLoad = shouldWaitOnLoad;
         return this;
     }
 
-    public override IPictureBoxBuilder BuildBackgroundImageLayout(int value)
+    public PictureBoxBuilder UseTransparentBackColor(bool shouldUseTransparentBackColor = true)
     {
-        _control.BackgroundImageLayout = (ImageLayout)value;
+        if (shouldUseTransparentBackColor)
+            _control.BackColor = Color.Transparent;
+
         return this;
-    }
-
-    public override IPictureBoxBuilder BuildDockStyle(int value)
-    {
-        _control.Dock = (DockStyle)value;
-        return this;
-    }
-
-    public override IPictureBoxBuilder BuildFont(Font? font)
-    {
-        _control.Font = font ?? default;
-        return this;
-    }
-
-    public override IPictureBoxBuilder BuildForeColor(Color color)
-    {
-        _control.ForeColor = color;
-        return this;
-    }
-
-    public override IPictureBoxBuilder BuildBackgroundImage(Image image)
-    {
-        _control.BackgroundImage = image;
-        return this;
-    }
-
-    public override IPictureBoxBuilder BuildLocation(Point point)
-    {
-        _control.Location = point;
-        return this;
-    }
-
-    public override IPictureBoxBuilder BuildText(string text)
-    {
-        _control.Text = text;
-        return this;
-    }
-
-    public override IPictureBoxBuilder BuildSize(Size size)
-    {
-        _control.Size = size;
-        return this;
-    }
-
-    public override IPictureBoxBuilder BuildPadding(int all)
-    {
-        _control.Padding = new Padding(all);
-        return this;
-    }
-
-    public override IPictureBoxBuilder BuildPadding(int left, int top, int right, int bottom)
-    {
-        _control.Padding = new Padding(left, top, right, bottom);
-        return this;
-    }
-
-    public override IPictureBoxBuilder BuildMargin(int all)
-    {
-        _control.Margin = new Padding(all);
-        return this;
-    }
-
-    public override IPictureBoxBuilder BuildMargin(int left, int top, int right, int bottom)
-    {
-        _control.Margin = new Padding(left, top, right, bottom);
-        return this;
-    }
-
-    public override IPictureBoxBuilder BuildEnabledBehaviour(bool isEnabled)
-    {
-        _control.Enabled = isEnabled;
-        return this;
-    }
-
-    public override IPictureBoxBuilder BuildVisibleBehaviour(bool isVisible)
-    {
-        _control.Visible = isVisible;
-        return this;
-    }
-
-    public override IPictureBoxBuilder BuildTabIndexBehaviour(int tabIndex)
-    {
-        _control.TabIndex = tabIndex;
-        return this;
-    }
-
-    public override IPictureBoxBuilder BuildClickEventHandler()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override IPictureBoxBuilder BuildMouseEnterEventHandler()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override IPictureBoxBuilder BuildMouseExitEventHandler()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override IPictureBoxBuilder BuildKeyUpEventHandler()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override IPictureBoxBuilder BuildKeyDownEventHandler()
-    {
-        throw new NotImplementedException();
     }
 }

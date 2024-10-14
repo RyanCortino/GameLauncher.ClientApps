@@ -4,7 +4,6 @@ using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms
 using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.SplashScreen;
 using GameLauncher.ClientApps.Winforms.Presentation.Clients;
 using GameLauncher.ClientApps.Winforms.Presentation.Common.Context.Menus;
-using GameLauncher.ClientApps.Winforms.Presentation.Common.Directors;
 using GameLauncher.ClientApps.Winforms.Presentation.Presenters.Controls.Navigation;
 using GameLauncher.ClientApps.Winforms.Presentation.Presenters.Forms.Main;
 using GameLauncher.ClientApps.Winforms.Presentation.Presenters.Forms.Splash;
@@ -48,9 +47,6 @@ public static class DependencyInjection
 
         // User Control Presenters
         services.AddTransient<INavigationPresenter, NavigationPresenter>();
-
-        // Helpers
-        services.AddTransient<ControlsDirector>();
 
         return services;
     }

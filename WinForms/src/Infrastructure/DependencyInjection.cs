@@ -23,9 +23,9 @@ public static class DependencyInjection
         services.AddTransient<ISettingsView, SettingsViewUC>();
 
         // Builders
-        services.AddTransient<IButtonBuilder, ButtonBuilder>();
-        services.AddTransient<ILabelBuilder, LabelBuilder>();
-        services.AddTransient<IPictureBoxBuilder, PictureBoxBuilder>();
+        services.AddTransient<ILabelBuilder<LabelBuilder>, LabelBuilder>();
+        services.AddTransient<IButtonBuilder<ButtonBuilder>, ButtonBuilder>();
+        services.AddTransient<IPictureBoxBuilder<PictureBoxBuilder>, PictureBoxBuilder>();
 
         return services;
     }
