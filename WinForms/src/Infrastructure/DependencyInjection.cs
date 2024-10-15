@@ -26,6 +26,7 @@ public static class DependencyInjection
         services.AddTransient<ILabelBuilder<LabelBuilder>, LabelBuilder>();
         services.AddTransient<IButtonBuilder<ButtonBuilder>, ButtonBuilder>();
         services.AddTransient<IPictureBoxBuilder<PictureBoxBuilder>, PictureBoxBuilder>();
+        services.AddTransient<IProgressBarBuilder<ProgressBarBuilder>, ProgressBarBuilder>();
 
         return services;
     }

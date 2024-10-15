@@ -5,11 +5,15 @@ using GameLauncher.ClientApps.Winforms.Presentation.Common.Utils;
 
 namespace GameLauncher.ClientApps.Winforms.Presentation.Views;
 
-internal class SplashView(ILabelBuilder<LabelBuilder> labelBuilder, ILogger<SplashView> logger)
-    : BaseView(logger),
-        ISplashView
+internal class SplashView(
+    ILabelBuilder<LabelBuilder> labelBuilder,
+    IProgressBarBuilder<ProgressBarBuilder> progressBuilder,
+    ILogger<SplashView> logger
+) : BaseView(logger), ISplashView
 {
     private readonly ILabelBuilder<LabelBuilder> _labelBuilder = labelBuilder;
+
+    private readonly IProgressBarBuilder<ProgressBarBuilder> _progressBarBuilder = progressBuilder;
 
     private Label? _assemblyVersionLabel = new();
 
@@ -76,14 +80,7 @@ internal class SplashView(ILabelBuilder<LabelBuilder> labelBuilder, ILogger<Spla
         };
 
         // Add required controls to the splash screen form
-        Controls.Add(
-            new ProgressBar
-            {
-                Style = ProgressBarStyle.Marquee,
-                Dock = DockStyle.Bottom,
-                Height = 10,
-            }
-        );
+        Controls.Add(BuildProgressBar());
 
         Controls.Add(_assemblyVersionLabel);
 
@@ -124,5 +121,14 @@ internal class SplashView(ILabelBuilder<LabelBuilder> labelBuilder, ILogger<Spla
             .SetAnchor((int)(AnchorStyles.Bottom | AnchorStyles.Left));
 
         return (_labelBuilder as LabelBuilder)!.Build();
+    }
+
+    private ProgressBar BuildProgressBar()
+    {
+        _progressBarBuilder.Reset();
+
+        _progressBarBuilder.UseMargueeStyle().SetDock((int)DockStyle.Bottom).SetHeight(10);
+
+        return (_progressBarBuilder as ProgressBarBuilder)!.Build();
     }
 }
