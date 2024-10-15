@@ -16,18 +16,22 @@ public class BaseView : Form, IFormView
         DeregisterEventHandlers();
     }
 
-    public event EventHandler? ViewShown;
-    public event EventHandler? ViewResized;
-    public event EventHandler? ViewLoaded;
-
     protected readonly ILogger _logger;
+
+    public event EventHandler? ViewShown;
+
+    public event EventHandler? ViewResized;
+
+    public event EventHandler? ViewLoaded;
 
     public virtual void InitializeView()
     {
         _logger.LogInformation("Initializing View: {viewType}", this.GetType().Name);
 
         SetSize();
+
         SetupAppearence();
+
         SetupControls();
     }
 

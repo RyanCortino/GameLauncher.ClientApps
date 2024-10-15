@@ -37,7 +37,14 @@ public class ButtonBuilder(IResourceFactory<Image> imageFactory)
 
     public ButtonBuilder SetImage(string resourceName)
     {
-        _control.Image = _imageFactory.GetResource(resourceName);
+        var image = _imageFactory.GetResource(resourceName);
+
+        return image is null ? this : SetImage(image);
+    }
+
+    public ButtonBuilder SetImage(Image image)
+    {
+        _control.Image = image;
         return this;
     }
 

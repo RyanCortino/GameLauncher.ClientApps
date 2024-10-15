@@ -1,16 +1,22 @@
 ﻿using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.UserControls;
-using Microsoft.Extensions.Logging;
 
 namespace GameLauncher.ClientApps.Winforms.Infrastructure.Controls;
 
-internal class BaseViewUC(ILogger<BaseViewUC> logger) : UserControl, IUserControlView
+internal class BaseViewUC : UserControl, IUserControlView
 {
+    public BaseViewUC(ILogger<BaseViewUC> logger)
+    {
+        _logger = logger;
+
+        RegisterEventHandlers();
+    }
+
     ~BaseViewUC()
     {
         UnregisterEventHandlers();
     }
 
-    protected readonly ILogger _logger = logger;
+    protected readonly ILogger _logger;
 
     public virtual void InitializeView()
     {
@@ -18,10 +24,12 @@ internal class BaseViewUC(ILogger<BaseViewUC> logger) : UserControl, IUserContro
 
         SetupAppearence();
 
-        RegisterEventHandlers();
+        SetupControls();
     }
 
     protected virtual void SetupAppearence() { }
+
+    protected virtual void SetupControls() { }
 
     protected virtual void RegisterEventHandlers() { }
 

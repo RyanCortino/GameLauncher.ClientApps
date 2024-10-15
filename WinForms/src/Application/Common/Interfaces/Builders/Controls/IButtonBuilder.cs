@@ -1,10 +1,13 @@
-﻿namespace GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders.Controls;
+﻿using System.Drawing;
+
+namespace GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Builders.Controls;
 
 public interface IButtonBuilder<TBuilder> : IBaseControlBuilder<TBuilder>
     where TBuilder : IBaseControlBuilder<TBuilder>
 {
     TBuilder SetTextAlign(int contentAlignment);
     TBuilder SetImage(string resourceName);
+    TBuilder SetImage(Image image);
     TBuilder SetImageAlign(int contentAlignment);
     TBuilder SetFlatStyle(int flatStyle);
     TBuilder SetFlatAppearance(
