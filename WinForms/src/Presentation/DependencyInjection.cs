@@ -2,6 +2,7 @@
 using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Presenters.Controls;
 using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.MainMdiForm;
 using GameLauncher.ClientApps.Winforms.Application.Common.Interfaces.Views.Forms.SplashScreen;
+using GameLauncher.ClientApps.Winforms.Presentation.Clients;
 using GameLauncher.ClientApps.Winforms.Presentation.Common.Context.Menus;
 using GameLauncher.ClientApps.Winforms.Presentation.Common.Directors;
 using GameLauncher.ClientApps.Winforms.Presentation.Presenters.Controls.Navigation;
@@ -22,6 +23,11 @@ public static class DependencyInjection
         // Config
         services.Configure<ApplicationOptions>(
             configuration.GetSection(nameof(ApplicationOptions))
+        );
+
+        // Api Clients
+        services.AddHttpClient<IBackendApiClient, BackendApiClient>(client =>
+            client.BaseAddress = new Uri("https://localhost:5001")
         );
 
         // Context Menus
