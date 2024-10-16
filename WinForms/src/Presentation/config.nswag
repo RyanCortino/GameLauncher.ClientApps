@@ -12,8 +12,8 @@
       "generateClientClasses": true,
       "generateClientInterfaces": true,
       "exceptionClass": "ApiException",
-      "namespace": "GameLauncher.ClientApps.Winforms.Presentation.Clients",
-      "output": "Clients/BackendApiClient.cs",
+      "namespace": "GameLauncher.ClientApps.Winforms.Presentation.ApiClients",
+      "output": "ApiClients/BackendApiClient.cs",
       "generateDtoTypes": true
     }
   }
